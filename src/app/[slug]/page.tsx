@@ -37,6 +37,7 @@ export async function generateMetadata({
     plg: "PLG Readiness",
     accessibility: "Accessibility",
     structure: "Structure & Scaffolding",
+    "seo-aeo": "SEO & AEO Visibility",
   };
   const label = toolLabels[(report.tool as string) ?? "plg"] ?? "Report";
   const description = report.summary as string;
@@ -74,6 +75,7 @@ export default async function SlugReportPage({ params }: SlugPageProps) {
     plg: "PLG Readiness Score",
     accessibility: "Accessibility Score",
     structure: "Structure Score",
+    "seo-aeo": "SEO & AEO Score",
   };
   const scoreLabel =
     toolScoreLabels[(report.tool as string) ?? "plg"] ?? "Score";

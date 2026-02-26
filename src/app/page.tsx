@@ -31,7 +31,7 @@ const TOOLS = [
     description:
       "Check how visible your site is to search engines and AI assistants.",
     href: "/seo-aeo",
-    status: "coming-soon" as const,
+    status: "live" as const,
     tags: ["SEO", "AI Visibility"],
   },
 ];

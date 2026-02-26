@@ -180,6 +180,7 @@ function generateSlug(siteName: string, tool: string): string {
     plg: "plg-assessment",
     accessibility: "accessibility-assessment",
     structure: "structure-assessment",
+    "seo-aeo": "seo-aeo-assessment",
   };
 
   return `${domain}-${toolSlugs[tool] || `${tool}-assessment`}`;
