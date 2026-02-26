@@ -33,14 +33,18 @@ export async function generateMetadata({
     return { title: "Report not found | Shrink Studio" };
   }
 
-  const title = `PLG Report: ${report.site_name} - ${report.overall_score}/100 | Shrink Studio`;
+  const toolLabels: Record<string, string> = {
+    plg: "PLG Readiness",
+    accessibility: "Accessibility",
+  };
+  const label = toolLabels[(report.tool as string) ?? "plg"] ?? "Report";
   const description = report.summary as string;
 
   return {
-    title,
+    title: `${label} Report: ${report.site_name} - ${report.overall_score}/100 | Shrink Studio`,
     description,
     openGraph: {
-      title: `PLG Readiness: ${report.site_name} scored ${report.overall_score}/100`,
+      title: `${label}: ${report.site_name} scored ${report.overall_score}/100`,
       description,
     },
   };
@@ -65,6 +69,13 @@ export default async function SlugReportPage({ params }: SlugPageProps) {
 
   const analyzedUrl = report.url as string;
 
+  const toolScoreLabels: Record<string, string> = {
+    plg: "PLG Readiness Score",
+    accessibility: "Accessibility Score",
+  };
+  const scoreLabel =
+    toolScoreLabels[(report.tool as string) ?? "plg"] ?? "Score";
+
   const createdAt = new Date(report.created_at as string);
   const formattedDate = createdAt.toLocaleDateString("en-GB", {
     day: "numeric",
@@ -86,6 +97,7 @@ export default async function SlugReportPage({ params }: SlugPageProps) {
           result={result}
           analyzedUrl={analyzedUrl}
           onAnalyzeAnother={null}
+          scoreLabel={scoreLabel}
         />
         <div className="max-w-2xl mx-auto px-6">
           <hr className="border-border-default" />

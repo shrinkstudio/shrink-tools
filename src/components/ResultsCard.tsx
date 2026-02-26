@@ -8,12 +8,14 @@ interface ResultsCardProps {
   result: AnalysisResult;
   analyzedUrl: string;
   onAnalyzeAnother?: (() => void) | null;
+  scoreLabel?: string;
 }
 
 export default function ResultsCard({
   result,
   analyzedUrl,
   onAnalyzeAnother,
+  scoreLabel = "PLG Readiness Score",
 }: ResultsCardProps) {
   let domain = analyzedUrl;
   try {
@@ -33,7 +35,7 @@ export default function ResultsCard({
       <div className="max-w-2xl mx-auto px-6">
         <div className="flex flex-col items-center text-center mb-8">
           <p className="font-mono text-[0.75rem] leading-[1.5] uppercase tracking-[0.1em] text-ink-muted mb-6">
-            PLG Readiness Score
+            {scoreLabel}
           </p>
           <ScoreRing
             score={result.overallScore}

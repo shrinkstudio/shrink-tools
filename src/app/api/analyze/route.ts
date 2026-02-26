@@ -178,6 +178,7 @@ function generateSlug(siteName: string, tool: string): string {
 
   const toolSlugs: Record<string, string> = {
     plg: "plg-assessment",
+    accessibility: "accessibility-assessment",
   };
 
   return `${domain}-${toolSlugs[tool] || `${tool}-assessment`}`;

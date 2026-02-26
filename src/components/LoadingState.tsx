@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const MESSAGES = [
+const DEFAULT_MESSAGES = [
   "Pulling your homepage...",
   "Checking signup flows...",
   "Looking for social proof...",
@@ -11,15 +11,21 @@ const MESSAGES = [
   "Crunching the numbers...",
 ];
 
-export default function LoadingState() {
+interface LoadingStateProps {
+  messages?: string[];
+}
+
+export default function LoadingState({
+  messages = DEFAULT_MESSAGES,
+}: LoadingStateProps) {
   const [messageIndex, setMessageIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setMessageIndex((prev) => (prev + 1) % MESSAGES.length);
+      setMessageIndex((prev) => (prev + 1) % messages.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, []);
+  }, [messages.length]);
 
   return (
     <section className="py-32">
@@ -29,11 +35,11 @@ export default function LoadingState() {
         </div>
 
         <p className="text-sm text-ink mb-8 transition-opacity duration-300">
-          {MESSAGES[messageIndex]}
+          {messages[messageIndex]}
         </p>
 
         <div className="flex justify-center gap-1.5">
-          {MESSAGES.map((_, i) => (
+          {messages.map((_, i) => (
             <div
               key={i}
               className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${

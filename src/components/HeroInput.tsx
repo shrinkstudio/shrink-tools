@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 
-interface HeroInputProps {
-  onAnalyze: (url: string) => void;
-  isLoading: boolean;
-}
-
-const CATEGORIES = [
+const DEFAULT_CATEGORIES = [
   "Value Prop",
   "Self-Service",
   "Onboarding",
@@ -17,7 +12,25 @@ const CATEGORIES = [
   "Pricing",
 ];
 
-export default function HeroInput({ onAnalyze, isLoading }: HeroInputProps) {
+interface HeroInputProps {
+  onAnalyze: (url: string) => void;
+  isLoading: boolean;
+  title?: React.ReactNode;
+  subtitle?: string;
+  placeholder?: string;
+  categories?: string[];
+  stats?: string[];
+}
+
+export default function HeroInput({
+  onAnalyze,
+  isLoading,
+  title,
+  subtitle,
+  placeholder = "Enter a URL - e.g. stripe.com",
+  categories = DEFAULT_CATEGORIES,
+  stats = ["7 Categories", "1 Page", "AI-Powered"],
+}: HeroInputProps) {
   const [url, setUrl] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -33,16 +46,21 @@ export default function HeroInput({ onAnalyze, isLoading }: HeroInputProps) {
         <p className="font-mono text-[0.75rem] leading-[1.5] uppercase tracking-[0.1em] text-ink-muted mb-4">
           Free Tool
         </p>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-ink leading-[1.1] mb-2">
-          Is your website actually
-        </h1>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-ink-muted leading-[1.1] mb-6">
-          built for growth?
-        </h1>
+        {title ? (
+          title
+        ) : (
+          <>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-ink leading-[1.1] mb-2">
+              Is your website actually
+            </h1>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-ink-muted leading-[1.1] mb-6">
+              built for growth?
+            </h1>
+          </>
+        )}
         <p className="text-base text-ink-secondary max-w-md mx-auto mb-10">
-          Most SaaS websites look the part but fumble the basics - buried
-          signups, vague pricing, zero social proof. Find out where yours stands
-          in 30 seconds.
+          {subtitle ??
+            "Most SaaS websites look the part but fumble the basics - buried signups, vague pricing, zero social proof. Find out where yours stands in 30 seconds."}
         </p>
 
         <form
@@ -53,7 +71,7 @@ export default function HeroInput({ onAnalyze, isLoading }: HeroInputProps) {
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="Enter a URL - e.g. stripe.com"
+            placeholder={placeholder}
             className="w-full pl-4 pr-32 py-3.5 border border-border-strong rounded-lg text-ink bg-white placeholder:text-ink-muted focus:outline-none focus:border-ink transition-colors text-sm"
             disabled={isLoading}
           />
@@ -68,7 +86,7 @@ export default function HeroInput({ onAnalyze, isLoading }: HeroInputProps) {
 
         {/* Stat tags */}
         <div className="flex items-center justify-center gap-2 flex-wrap mb-4">
-          {["7 Categories", "1 Page", "AI-Powered"].map((stat) => (
+          {stats.map((stat) => (
             <span
               key={stat}
               className="font-mono text-[0.65rem] leading-[1.5] uppercase tracking-[0.1em] text-ink-muted border border-border-default rounded px-2 py-0.5"
@@ -80,7 +98,7 @@ export default function HeroInput({ onAnalyze, isLoading }: HeroInputProps) {
 
         {/* Category pills */}
         <div className="flex items-center justify-center gap-1.5 flex-wrap mb-6">
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <span
               key={cat}
               className="text-[0.65rem] text-ink-secondary bg-surface rounded-full px-2.5 py-0.5"

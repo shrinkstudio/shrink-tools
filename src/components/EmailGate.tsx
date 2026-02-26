@@ -15,6 +15,8 @@ interface EmailGateProps {
   analyzedUrl: string;
   onUnlock: () => void;
   reportId: string | null;
+  tool?: string;
+  scoreLabel?: string;
 }
 
 export default function EmailGate({
@@ -22,6 +24,8 @@ export default function EmailGate({
   analyzedUrl,
   onUnlock,
   reportId,
+  tool = "plg",
+  scoreLabel = "PLG Readiness Score",
 }: EmailGateProps) {
   let domain = analyzedUrl;
   try {
@@ -70,7 +74,7 @@ export default function EmailGate({
         overallScore: result.overallScore,
         gdprConsent: true,
         mailingListOptIn: mailingList,
-        tool: "plg",
+        tool,
         timestamp: new Date().toISOString(),
         reportId,
       }),
@@ -90,7 +94,7 @@ export default function EmailGate({
       <div className="max-w-lg mx-auto px-6">
         <div className="flex flex-col items-center mb-12">
           <p className="font-mono text-[0.75rem] leading-[1.5] uppercase tracking-[0.1em] text-ink-muted mb-6">
-            PLG Readiness Score
+            {scoreLabel}
           </p>
           <ScoreRing
             score={result.overallScore}
