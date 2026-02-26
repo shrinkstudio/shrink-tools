@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
 interface LeadPayload {
   email: string;
@@ -63,10 +64,21 @@ export async function POST(request: NextRequest) {
     ];
 
     if (body.reportId) {
+      let reportUrl = `https://tools.shrink.studio/report/${body.reportId}`;
+      try {
+        const { data: report } = await supabase
+          .from("reports")
+          .select("slug")
+          .eq("id", body.reportId)
+          .single();
+        if (report?.slug) {
+          reportUrl = `https://tools.shrink.studio/${report.slug}`;
+        }
+      } catch {
+        // fall back to UUID URL
+      }
       lines.push("");
-      lines.push(
-        `Report: https://tools.shrink.studio/report/${body.reportId}`
-      );
+      lines.push(`Report: ${reportUrl}`);
     }
 
     const taskBody = {

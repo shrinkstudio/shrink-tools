@@ -169,6 +169,20 @@ function extractContent(html: string) {
   };
 }
 
+function generateSlug(siteName: string, tool: string): string {
+  const domain = siteName
+    .replace(/^www\./, "")
+    .replace(/\./g, "-")
+    .replace(/[^a-z0-9-]/gi, "")
+    .toLowerCase();
+
+  const toolSlugs: Record<string, string> = {
+    plg: "plg-assessment",
+  };
+
+  return `${domain}-${toolSlugs[tool] || `${tool}-assessment`}`;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { url } = await request.json();
@@ -297,12 +311,33 @@ ${pricingContent ? `Pricing Page Content:\n${pricingContent}` : "No dedicated pr
 
     // Save report to Supabase (don't block response if it fails)
     let reportId: string | null = null;
+    let reportSlug: string | null = null;
     try {
       let siteName = normalizedUrl;
       try {
         siteName = new URL(normalizedUrl).hostname;
       } catch {
         // keep raw URL
+      }
+
+      // Generate a unique slug
+      const baseSlug = generateSlug(siteName, "plg");
+      let slug = baseSlug;
+      const { data: existing } = await supabase
+        .from("reports")
+        .select("slug")
+        .like("slug", `${baseSlug}%`)
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (existing && existing.length > 0) {
+        const lastSlug = existing[0].slug as string;
+        const match = lastSlug.match(/-(\d+)$/);
+        if (match) {
+          slug = `${baseSlug}-${parseInt(match[1]) + 1}`;
+        } else {
+          slug = `${baseSlug}-2`;
+        }
       }
 
       const { data: report, error: dbError } = await supabase
@@ -316,20 +351,22 @@ ${pricingContent ? `Pricing Page Content:\n${pricingContent}` : "No dedicated pr
           strengths: result.strengths,
           improvements: result.improvements,
           tool: "plg",
+          slug,
         })
-        .select("id")
+        .select("id, slug")
         .single();
 
       if (dbError) {
         console.error("Supabase insert error:", dbError);
       } else if (report) {
         reportId = report.id;
+        reportSlug = report.slug;
       }
     } catch (dbError) {
       console.error("Failed to save report:", dbError);
     }
 
-    return NextResponse.json({ ...result, reportId });
+    return NextResponse.json({ ...result, reportId, slug: reportSlug });
   } catch (error) {
     console.error("Analysis error:", error);
     return NextResponse.json(
