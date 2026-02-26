@@ -23,7 +23,7 @@ const TOOLS = [
     description:
       "Evaluate your site architecture, navigation and content hierarchy.",
     href: "/structure",
-    status: "coming-soon" as const,
+    status: "live" as const,
     tags: ["Architecture", "UX"],
   },
   {

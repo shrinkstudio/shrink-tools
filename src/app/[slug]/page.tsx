@@ -36,6 +36,7 @@ export async function generateMetadata({
   const toolLabels: Record<string, string> = {
     plg: "PLG Readiness",
     accessibility: "Accessibility",
+    structure: "Structure & Scaffolding",
   };
   const label = toolLabels[(report.tool as string) ?? "plg"] ?? "Report";
   const description = report.summary as string;
@@ -72,6 +73,7 @@ export default async function SlugReportPage({ params }: SlugPageProps) {
   const toolScoreLabels: Record<string, string> = {
     plg: "PLG Readiness Score",
     accessibility: "Accessibility Score",
+    structure: "Structure Score",
   };
   const scoreLabel =
     toolScoreLabels[(report.tool as string) ?? "plg"] ?? "Score";
