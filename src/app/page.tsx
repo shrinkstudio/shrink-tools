@@ -44,7 +44,7 @@ export default function ToolsLanding() {
       <main className="flex-1">
         {/* Hero */}
         <section className="max-w-2xl mx-auto px-6 pt-20 pb-12 text-center">
-          <p className="font-mono text-[0.75rem] leading-[1.5] tracking-[0.1em] uppercase text-accent mb-4">
+          <p className="font-mono text-[0.75rem] leading-[1.5] tracking-[0.1em] uppercase text-ink-secondary mb-4">
             Free Tools
           </p>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink mb-4">
@@ -65,7 +65,7 @@ export default function ToolsLanding() {
               const card = (
                 <div
                   key={tool.name}
-                  className={`relative border border-border-default rounded-lg p-6 ${
+                  className={`relative border border-border-default rounded-lg p-6 h-full flex flex-col ${
                     isLive
                       ? "transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
                       : "opacity-50"
@@ -74,7 +74,7 @@ export default function ToolsLanding() {
                   {/* Status badge */}
                   <span
                     className={`absolute top-4 right-4 font-mono text-[0.65rem] leading-[1.5] tracking-[0.1em] uppercase ${
-                      isLive ? "text-accent" : "text-ink-muted"
+                      isLive ? "text-ink-secondary" : "text-ink-muted"
                     }`}
                   >
                     {isLive ? "Live" : "Coming Soon"}
@@ -84,7 +84,7 @@ export default function ToolsLanding() {
                   <h2 className="text-lg font-semibold text-ink pr-20 mb-2">
                     {tool.name}
                   </h2>
-                  <p className="text-sm text-ink-secondary mb-4">
+                  <p className="text-sm text-ink-secondary mb-4 flex-1">
                     {tool.description}
                   </p>
 
