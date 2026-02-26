@@ -1,10 +1,17 @@
+const TOOLS = [
+  { name: "PLG Readiness", href: "/plg-readiness" },
+  { name: "Accessibility", href: "/accessibility" },
+  { name: "Structure & Scaffolding", href: "/structure" },
+  { name: "SEO & AEO Visibility", href: "/seo-aeo" },
+];
+
 export default function Header() {
   return (
     <header className="sticky top-0 z-[999] w-full py-2.5 bg-white/100 backdrop-blur-[2px] border-b border-border-default text-ink">
       <div className="flex justify-between items-center gap-4 max-xs:gap-2 w-full max-w-[94rem] mx-auto px-6">
         {/* Logo */}
         <a
-          href="https://shrink.studio"
+          href="/"
           className="flex w-24 max-xs:w-full max-xs:max-w-[5rem] leading-none text-ink transition-opacity duration-300 ease-in-out hover:opacity-50"
         >
           <svg
@@ -66,12 +73,36 @@ export default function Header() {
 
         {/* Nav Links (center) */}
         <nav className="hidden md:flex items-center gap-2 ml-auto mr-auto">
-          <a
-            href="/"
-            className="inline-flex justify-center items-center py-[0.5em] px-[0.85em] gap-[0.3em] text-accent-dark transition-[color] duration-300 ease-[cubic-bezier(.165,.84,.44,1)] no-underline"
-          >
-            Tools
-          </a>
+          <div className="relative group">
+            <a
+              href="/"
+              className="inline-flex justify-center items-center py-[0.5em] px-[0.85em] gap-[0.3em] text-ink transition-opacity duration-300 ease-in-out hover:opacity-50 no-underline font-mono text-[0.75rem] leading-[1.5] tracking-[0.1em] uppercase"
+            >
+              Tools
+              <svg
+                className="w-3 h-3 ml-0.5 transition-transform duration-200 group-hover:rotate-180"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+            <div className="absolute top-full left-0 pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div className="bg-white border border-border-default rounded-lg shadow-md py-2 min-w-[220px]">
+                {TOOLS.map((tool) => (
+                  <a
+                    key={tool.href}
+                    href={tool.href}
+                    className="block px-4 py-2 text-sm text-ink-secondary hover:text-ink hover:bg-surface transition-colors"
+                  >
+                    {tool.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
         </nav>
 
         {/* CTA Button */}
