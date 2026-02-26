@@ -1,3 +1,5 @@
+"use client";
+
 import posthog from "posthog-js";
 import ScoreRing from "./ScoreRing";
 import type { AnalysisResult } from "@/lib/types";
