@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import posthog from "posthog-js";
 import Header from "@/components/Header";
 import HeroInput from "@/components/HeroInput";
 import LoadingState from "@/components/LoadingState";
@@ -10,7 +11,15 @@ import CategoryBreakdown from "@/components/CategoryBreakdown";
 import StrengthsList from "@/components/StrengthsList";
 import ImprovementsList from "@/components/ImprovementsList";
 import Footer from "@/components/Footer";
-import type { AnalysisResult, AppState } from "@/lib/types";
+import type { AnalysisResult, AppState, CategoryScore } from "@/lib/types";
+
+function categoryScoreProps(categories: CategoryScore[]) {
+  const map: Record<string, number> = {};
+  for (const c of categories) {
+    map[c.name.toLowerCase().replace(/[\s&]+/g, "_")] = c.score;
+  }
+  return map;
+}
 
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
@@ -28,6 +37,7 @@ export default function Home() {
     setState("loading");
     setError("");
     setAnalyzedUrl(url);
+    posthog.capture("analysis_started", { domain: url });
 
     try {
       const response = await fetch("/api/analyze", {
@@ -46,6 +56,11 @@ export default function Home() {
 
       // Skip the email gate if they've already unlocked before
       if (getCookie("shrink-tools-unlocked")) {
+        posthog.capture("analysis_completed", {
+          domain: url,
+          score: data.overallScore,
+          ...categoryScoreProps(data.categories),
+        });
         setState("results");
       } else {
         setState("gated");
@@ -61,6 +76,11 @@ export default function Home() {
   };
 
   const handleUnlock = () => {
+    posthog.capture("analysis_completed", {
+      domain: analyzedUrl,
+      score: result!.overallScore,
+      ...categoryScoreProps(result!.categories),
+    });
     setState("results");
   };
 

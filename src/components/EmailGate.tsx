@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import posthog from "posthog-js";
 import ScoreRing from "./ScoreRing";
 import type { AnalysisResult } from "@/lib/types";
 
@@ -46,6 +47,17 @@ export default function EmailGate({
       return;
     }
     setGdprError("");
+
+    posthog.capture("email_submitted", {
+      domain: analyzedUrl,
+      email,
+      opted_in_mailing: mailingList,
+    });
+
+    posthog.identify(email, {
+      email,
+      mailing_list: mailingList,
+    });
 
     // Fire-and-forget: send lead to ClickUp, don't block the user
     fetch("/api/leads", {

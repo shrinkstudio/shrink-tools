@@ -1,3 +1,4 @@
+import posthog from "posthog-js";
 import ScoreRing from "./ScoreRing";
 import type { AnalysisResult } from "@/lib/types";
 
@@ -73,6 +74,13 @@ export default function ResultsCard({
             href="https://cal.com/shrinkstudio/30min"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() =>
+              posthog.capture("cta_clicked", {
+                domain: analyzedUrl,
+                score: result.overallScore,
+                cta: "talk_to_us",
+              })
+            }
             className="px-5 py-2.5 bg-ink text-white rounded-lg border border-transparent font-mono text-[0.75rem] leading-[1.5] uppercase tracking-[0.1em] transition-opacity duration-300 ease-in-out hover:opacity-50 text-center"
           >
             Talk to us
