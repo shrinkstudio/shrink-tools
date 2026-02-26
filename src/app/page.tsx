@@ -1,152 +1,119 @@
-"use client";
-
-import { useState } from "react";
-import posthog from "posthog-js";
 import Header from "@/components/Header";
-import HeroInput from "@/components/HeroInput";
-import LoadingState from "@/components/LoadingState";
-import EmailGate from "@/components/EmailGate";
-import ResultsCard from "@/components/ResultsCard";
-import CategoryBreakdown from "@/components/CategoryBreakdown";
-import StrengthsList from "@/components/StrengthsList";
-import ImprovementsList from "@/components/ImprovementsList";
 import Footer from "@/components/Footer";
-import type { AnalysisResult, AppState, CategoryScore } from "@/lib/types";
 
-function categoryScoreProps(categories: CategoryScore[]) {
-  const map: Record<string, number> = {};
-  for (const c of categories) {
-    map[c.name.toLowerCase().replace(/[\s&]+/g, "_")] = c.score;
-  }
-  return map;
-}
+const TOOLS = [
+  {
+    name: "PLG Readiness Analyser",
+    description:
+      "Find out if your website is actually built for product-led growth.",
+    href: "/plg-readiness",
+    status: "live" as const,
+    tags: ["Growth", "Conversion"],
+  },
+  {
+    name: "Accessibility Checker",
+    description:
+      "Audit your site against WCAG standards and get actionable fixes.",
+    href: "/accessibility",
+    status: "coming-soon" as const,
+    tags: ["Accessibility", "Compliance"],
+  },
+  {
+    name: "Structure & Scaffolding Checker",
+    description:
+      "Evaluate your site architecture, navigation and content hierarchy.",
+    href: "/structure",
+    status: "coming-soon" as const,
+    tags: ["Architecture", "UX"],
+  },
+  {
+    name: "SEO & AEO Visibility Checker",
+    description:
+      "Check how visible your site is to search engines and AI assistants.",
+    href: "/seo-aeo",
+    status: "coming-soon" as const,
+    tags: ["SEO", "AI Visibility"],
+  },
+];
 
-function getCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-  return match ? match[2] : null;
-}
-
-export default function Home() {
-  const [state, setState] = useState<AppState>("idle");
-  const [result, setResult] = useState<AnalysisResult | null>(null);
-  const [analyzedUrl, setAnalyzedUrl] = useState("");
-  const [error, setError] = useState("");
-
-  const handleAnalyze = async (url: string) => {
-    setState("loading");
-    setError("");
-    setAnalyzedUrl(url);
-    posthog.capture("analysis_started", { domain: url });
-
-    try {
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Analysis failed");
-      }
-
-      setResult(data);
-
-      // Skip the email gate if they've already unlocked before
-      if (getCookie("shrink-tools-unlocked")) {
-        posthog.capture("analysis_completed", {
-          domain: url,
-          score: data.overallScore,
-          ...categoryScoreProps(data.categories),
-        });
-        setState("results");
-      } else {
-        setState("gated");
-      }
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Something went wrong on our end. Give it another go."
-      );
-      setState("idle");
-    }
-  };
-
-  const handleUnlock = () => {
-    posthog.capture("analysis_completed", {
-      domain: analyzedUrl,
-      score: result!.overallScore,
-      ...categoryScoreProps(result!.categories),
-    });
-    setState("results");
-  };
-
-  const handleAnalyzeAnother = () => {
-    setState("idle");
-    setResult(null);
-    setAnalyzedUrl("");
-    setError("");
-  };
-
+export default function ToolsLanding() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
 
       <main className="flex-1">
-        {state === "idle" && (
-          <div className="animate-fade-in">
-            <HeroInput onAnalyze={handleAnalyze} isLoading={false} />
-            {error && (
-              <div className="max-w-md mx-auto px-6 -mt-16 mb-10">
-                <div className="border border-score-bad/20 bg-score-bad/5 text-score-bad px-4 py-3 rounded-lg text-sm text-center">
-                  {error}
+        {/* Hero */}
+        <section className="max-w-2xl mx-auto px-6 pt-20 pb-12 text-center">
+          <p className="font-mono text-[0.75rem] leading-[1.5] tracking-[0.1em] uppercase text-accent mb-4">
+            Free Tools
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink mb-4">
+            Website audit tools
+          </h1>
+          <p className="text-lg text-ink-secondary max-w-md mx-auto">
+            AI-powered audits that tell you what&apos;s working and what to fix.
+            Free, fast, no sign-up required.
+          </p>
+        </section>
+
+        {/* Tool cards */}
+        <section className="max-w-2xl mx-auto px-6 pb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {TOOLS.map((tool) => {
+              const isLive = tool.status === "live";
+
+              const card = (
+                <div
+                  key={tool.name}
+                  className={`relative border border-border-default rounded-lg p-6 ${
+                    isLive
+                      ? "transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                      : "opacity-50"
+                  }`}
+                >
+                  {/* Status badge */}
+                  <span
+                    className={`absolute top-4 right-4 font-mono text-[0.65rem] leading-[1.5] tracking-[0.1em] uppercase ${
+                      isLive ? "text-accent" : "text-ink-muted"
+                    }`}
+                  >
+                    {isLive ? "Live" : "Coming Soon"}
+                  </span>
+
+                  {/* Content */}
+                  <h2 className="text-lg font-semibold text-ink pr-20 mb-2">
+                    {tool.name}
+                  </h2>
+                  <p className="text-sm text-ink-secondary mb-4">
+                    {tool.description}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {tool.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="font-mono text-[0.65rem] leading-[1.5] tracking-[0.1em] uppercase text-ink-muted border border-border-default rounded px-2 py-0.5"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
+              );
 
-        {state === "loading" && (
-          <div className="animate-fade-in">
-            <LoadingState />
-          </div>
-        )}
+              if (isLive) {
+                return (
+                  <a key={tool.name} href={tool.href} className="block">
+                    {card}
+                  </a>
+                );
+              }
 
-        {state === "gated" && result && (
-          <div className="animate-fade-in">
-            <EmailGate
-              result={result}
-              analyzedUrl={analyzedUrl}
-              onUnlock={handleUnlock}
-              reportId={result.reportId ?? null}
-            />
+              return card;
+            })}
           </div>
-        )}
-
-        {state === "results" && result && (
-          <div className="animate-fade-in">
-            <ResultsCard
-              result={result}
-              analyzedUrl={analyzedUrl}
-              onAnalyzeAnother={handleAnalyzeAnother}
-            />
-            <div className="max-w-2xl mx-auto px-6">
-              <hr className="border-border-default" />
-            </div>
-            <CategoryBreakdown categories={result.categories} />
-            <div className="max-w-2xl mx-auto px-6">
-              <hr className="border-border-default" />
-            </div>
-            <StrengthsList strengths={result.strengths} />
-            <div className="max-w-2xl mx-auto px-6">
-              <hr className="border-border-default" />
-            </div>
-            <ImprovementsList improvements={result.improvements} />
-          </div>
-        )}
+        </section>
       </main>
 
       <Footer />

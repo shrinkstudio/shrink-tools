@@ -17,9 +17,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PLG Readiness Analyser | Shrink Studio | Webflow Premium Partner",
+  title: "Free Website Audit Tools | Shrink Studio",
   description:
-    "Find out if your website is actually built for product-led growth. Free AI-powered analysis across 7 categories. Takes 30 seconds.",
+    "Free AI-powered website audit tools from Shrink Studio. Analyse your site for PLG readiness, accessibility, structure, SEO and more.",
 };
 
 export default function RootLayout({
