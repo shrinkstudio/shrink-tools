@@ -2,6 +2,7 @@
 
 import posthog from "posthog-js";
 import ScoreRing from "./ScoreRing";
+import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/lib/types";
 
 interface ResultsCardProps {
@@ -74,28 +75,30 @@ export default function ResultsCard({
         </div>
 
         <div className="flex justify-center gap-3">
-          <a
-            href="https://cal.com/shrinkstudio/30min"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() =>
-              posthog.capture("cta_clicked", {
-                domain: analyzedUrl,
-                score: result.overallScore,
-                cta: "talk_to_us",
-              })
-            }
-            className="px-5 py-2.5 bg-ink text-white rounded-lg border border-transparent font-mono text-[0.75rem] leading-[1.5] uppercase tracking-[0.1em] transition-opacity duration-300 ease-in-out hover:opacity-50 text-center"
-          >
-            Talk to us
-          </a>
+          <Button asChild>
+            <a
+              href="https://cal.com/shrinkstudio/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                posthog.capture("cta_clicked", {
+                  domain: analyzedUrl,
+                  score: result.overallScore,
+                  cta: "talk_to_us",
+                })
+              }
+            >
+              Talk to us
+            </a>
+          </Button>
           {onAnalyzeAnother && (
-            <button
+            <Button
+              variant="outline"
               onClick={onAnalyzeAnother}
-              className="cursor-pointer px-5 py-2.5 border border-border-strong text-ink rounded-lg font-mono text-[0.75rem] leading-[1.5] uppercase tracking-[0.1em] transition-opacity duration-300 ease-in-out hover:opacity-50"
+              className="cursor-pointer"
             >
               Analyse another site
-            </button>
+            </Button>
           )}
         </div>
       </div>

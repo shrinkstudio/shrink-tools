@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const DEFAULT_CATEGORIES = [
   "Value Prop",
@@ -67,44 +70,38 @@ export default function HeroInput({
           onSubmit={handleSubmit}
           className="relative max-w-md mx-auto mb-6"
         >
-          <input
+          <Input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder={placeholder}
-            className="w-full pl-4 pr-32 py-3.5 border border-border-strong rounded-lg text-ink bg-white placeholder:text-ink-muted focus:outline-none focus:border-ink transition-colors text-sm"
+            className="w-full pl-4 pr-32 py-3.5"
             disabled={isLoading}
           />
-          <button
+          <Button
             type="submit"
             disabled={isLoading || !url.trim()}
-            className="cursor-pointer absolute right-1.5 top-1.5 bottom-1.5 bg-ink text-white uppercase tracking-[0.1em] font-mono text-[0.75rem] leading-[1.5] font-medium px-4 rounded-md border border-transparent transition-opacity duration-300 ease-in-out hover:opacity-50 disabled:opacity-30 disabled:cursor-not-allowed"
+            className="cursor-pointer absolute right-1.5 top-1.5 bottom-1.5 h-auto rounded-md px-4"
           >
             Analyse &rarr;
-          </button>
+          </Button>
         </form>
 
         {/* Stat tags */}
         <div className="flex items-center justify-center gap-2 flex-wrap mb-4">
           {stats.map((stat) => (
-            <span
-              key={stat}
-              className="font-mono text-[0.65rem] leading-[1.5] uppercase tracking-[0.1em] text-ink-muted border border-border-default rounded px-2 py-0.5"
-            >
+            <Badge key={stat} variant="outline">
               {stat}
-            </span>
+            </Badge>
           ))}
         </div>
 
         {/* Category pills */}
         <div className="flex items-center justify-center gap-1.5 flex-wrap mb-6">
           {categories.map((cat) => (
-            <span
-              key={cat}
-              className="text-[0.65rem] text-ink-secondary bg-surface rounded-full px-2.5 py-0.5"
-            >
+            <Badge key={cat} variant="secondary">
               {cat}
-            </span>
+            </Badge>
           ))}
         </div>
 

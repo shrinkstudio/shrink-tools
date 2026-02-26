@@ -1,3 +1,5 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import type { Strength } from "@/lib/types";
 
 interface StrengthsListProps {
@@ -14,29 +16,28 @@ export default function StrengthsList({ strengths }: StrengthsListProps) {
         <h3 className="text-lg font-black text-ink mb-6">The good stuff</h3>
         <div className="space-y-4">
           {strengths.map((strength, i) => (
-            <div
-              key={i}
-              className="border border-border-default rounded-lg p-5"
-            >
-              <div className="flex items-center gap-2.5 mb-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-accent-deep flex-shrink-0" />
-                <h3 className="text-sm font-semibold text-ink">
-                  {strength.title}
-                </h3>
-                <span
-                  className={`text-[0.65rem] font-mono uppercase px-1.5 py-0.5 rounded ${
-                    strength.impact === "HIGH"
-                      ? "bg-accent-light text-accent-deep"
-                      : "bg-warn-light text-score-warn"
-                  }`}
-                >
-                  {strength.impact}
-                </span>
-              </div>
-              <p className="text-ink-secondary text-sm pl-4">
-                {strength.description}
-              </p>
-            </div>
+            <Card key={i} className="p-5">
+              <CardContent className="p-0">
+                <div className="flex items-center gap-2.5 mb-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent-deep flex-shrink-0" />
+                  <h3 className="text-sm font-semibold text-ink">
+                    {strength.title}
+                  </h3>
+                  <Badge
+                    variant={
+                      strength.impact === "HIGH"
+                        ? "impact-high"
+                        : "impact-medium"
+                    }
+                  >
+                    {strength.impact}
+                  </Badge>
+                </div>
+                <p className="text-ink-secondary text-sm pl-4">
+                  {strength.description}
+                </p>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

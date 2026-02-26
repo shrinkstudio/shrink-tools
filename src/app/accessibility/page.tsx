@@ -11,6 +11,8 @@ import CategoryBreakdown from "@/components/CategoryBreakdown";
 import StrengthsList from "@/components/StrengthsList";
 import ImprovementsList from "@/components/ImprovementsList";
 import Footer from "@/components/Footer";
+import { Alert } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
 import type { AnalysisResult, AppState, CategoryScore } from "@/lib/types";
 
 const CATEGORIES = [
@@ -136,9 +138,7 @@ export default function AccessibilityPage() {
             />
             {error && (
               <div className="max-w-md mx-auto px-6 -mt-16 mb-10">
-                <div className="border border-score-bad/20 bg-score-bad/5 text-score-bad px-4 py-3 rounded-lg text-sm text-center">
-                  {error}
-                </div>
+                <Alert variant="destructive">{error}</Alert>
               </div>
             )}
           </div>
@@ -172,15 +172,15 @@ export default function AccessibilityPage() {
               scoreLabel="Accessibility Score"
             />
             <div className="max-w-2xl mx-auto px-6">
-              <hr className="border-border-default" />
+              <Separator />
             </div>
             <CategoryBreakdown categories={result.categories} />
             <div className="max-w-2xl mx-auto px-6">
-              <hr className="border-border-default" />
+              <Separator />
             </div>
             <StrengthsList strengths={result.strengths} />
             <div className="max-w-2xl mx-auto px-6">
-              <hr className="border-border-default" />
+              <Separator />
             </div>
             <ImprovementsList improvements={result.improvements} />
           </div>

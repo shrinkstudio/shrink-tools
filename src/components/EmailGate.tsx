@@ -3,6 +3,11 @@
 import { useState } from "react";
 import posthog from "posthog-js";
 import ScoreRing from "./ScoreRing";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import type { AnalysisResult } from "@/lib/types";
 
 function setCookie(name: string, value: string, days: number) {
@@ -127,98 +132,101 @@ export default function EmailGate({
           </div>
         </div>
 
-        <div className="bg-white border border-border-default rounded-lg p-8">
-          <h2 className="text-xl font-black text-ink mb-2">
-            Your full report is ready.
-          </h2>
-          <p className="text-sm text-ink-secondary mb-8">
-            Drop your email to unlock the category breakdown, specific wins, and
-            what to fix first.
-          </p>
+        <Card className="p-8">
+          <CardHeader className="p-0 pb-8">
+            <CardTitle>Your full report is ready.</CardTitle>
+            <CardDescription>
+              Drop your email to unlock the category breakdown, specific wins, and
+              what to fix first.
+            </CardDescription>
+          </CardHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs text-ink-secondary mb-1.5">
-                Work email
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@company.com"
-                className="w-full px-3.5 py-2.5 border border-border-strong rounded-lg text-sm text-ink bg-white placeholder:text-ink-muted focus:outline-none focus:border-ink transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-ink-secondary mb-1.5">
-                Company
-              </label>
-              <input
-                type="text"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                placeholder="Acme Inc"
-                className="w-full px-3.5 py-2.5 border border-border-strong rounded-lg text-sm text-ink bg-white placeholder:text-ink-muted focus:outline-none focus:border-ink transition-colors"
-              />
-            </div>
-
-            {/* GDPR consent */}
-            <div className="space-y-3 pt-2">
-              <label className="flex items-start gap-2.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={gdprConsent}
-                  onChange={(e) => {
-                    setGdprConsent(e.target.checked);
-                    if (e.target.checked) setGdprError("");
-                  }}
-                  className="mt-0.5 w-4 h-4 rounded border-border-strong accent-ink flex-shrink-0"
+          <CardContent className="p-0">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label className="text-xs text-ink-secondary mb-1.5">
+                  Work email
+                </Label>
+                <Input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@company.com"
                 />
-                <span className="text-xs text-ink-secondary leading-relaxed">
-                  I agree to Shrink Studio{" "}
-                  <a
-                    href="https://shrink.studio/legals/privacy-policy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:text-ink transition-colors"
+              </div>
+              <div>
+                <Label className="text-xs text-ink-secondary mb-1.5">
+                  Company
+                </Label>
+                <Input
+                  type="text"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                  placeholder="Acme Inc"
+                />
+              </div>
+
+              {/* GDPR consent */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-start gap-2.5">
+                  <Checkbox
+                    id="gdpr-consent"
+                    checked={gdprConsent}
+                    onCheckedChange={(checked) => {
+                      setGdprConsent(checked === true);
+                      if (checked) setGdprError("");
+                    }}
+                    className="mt-0.5"
+                  />
+                  <Label
+                    htmlFor="gdpr-consent"
+                    className="text-xs text-ink-secondary leading-relaxed font-normal cursor-pointer"
                   >
-                    storing my details
-                  </a>{" "}
-                  and contacting me about my results.
-                </span>
-              </label>
-              {gdprError && (
-                <p className="text-xs text-score-bad pl-6.5">{gdprError}</p>
-              )}
+                    I agree to Shrink Studio{" "}
+                    <a
+                      href="https://shrink.studio/legals/privacy-policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-ink transition-colors"
+                    >
+                      storing my details
+                    </a>{" "}
+                    and contacting me about my results.
+                  </Label>
+                </div>
+                {gdprError && (
+                  <p className="text-xs text-score-bad pl-6.5">{gdprError}</p>
+                )}
 
-              {/* Mailing list opt-in */}
-              <label className="flex items-start gap-2.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={mailingList}
-                  onChange={(e) => setMailingList(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 rounded border-border-strong accent-ink flex-shrink-0"
-                />
-                <span className="text-xs text-ink-secondary leading-relaxed">
-                  Send me occasional tips on PLG, web strategy, and what&apos;s
-                  working for other companies.
-                </span>
-              </label>
-            </div>
+                {/* Mailing list opt-in */}
+                <div className="flex items-start gap-2.5">
+                  <Checkbox
+                    id="mailing-list"
+                    checked={mailingList}
+                    onCheckedChange={(checked) => setMailingList(checked === true)}
+                    className="mt-0.5"
+                  />
+                  <Label
+                    htmlFor="mailing-list"
+                    className="text-xs text-ink-secondary leading-relaxed font-normal cursor-pointer"
+                  >
+                    Send me occasional tips on PLG, web strategy, and what&apos;s
+                    working for other companies.
+                  </Label>
+                </div>
+              </div>
 
-            <button
-              type="submit"
-              className="cursor-pointer w-full bg-ink text-white uppercase tracking-[0.1em] font-mono text-[0.75rem] leading-[1.5] font-medium py-3 rounded-lg border border-transparent transition-opacity duration-300 ease-in-out hover:opacity-50"
-            >
-              Unlock Report &rarr;
-            </button>
+              <Button type="submit" size="lg" className="cursor-pointer w-full">
+                Unlock Report &rarr;
+              </Button>
 
-            <p className="text-[0.65rem] text-ink-muted text-center">
-              No spam. Unsubscribe anytime.
-            </p>
-          </form>
-        </div>
+              <p className="text-[0.65rem] text-ink-muted text-center">
+                No spam. Unsubscribe anytime.
+              </p>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </section>
   );

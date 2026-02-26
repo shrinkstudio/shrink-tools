@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const TOOLS = [
   {
@@ -63,43 +65,42 @@ export default function ToolsLanding() {
               const isLive = tool.status === "live";
 
               const card = (
-                <div
+                <Card
                   key={tool.name}
-                  className={`relative border border-border-default rounded-lg p-6 h-full flex flex-col ${
+                  className={`relative p-6 h-full ${
                     isLive
                       ? "transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
                       : "opacity-50"
                   }`}
                 >
-                  {/* Status badge */}
-                  <span
-                    className={`absolute top-4 right-4 font-mono text-[0.65rem] leading-[1.5] tracking-[0.1em] uppercase ${
-                      isLive ? "text-ink-secondary" : "text-ink-muted"
-                    }`}
-                  >
-                    {isLive ? "Live" : "Coming Soon"}
-                  </span>
+                  <CardContent className="p-0 flex flex-col h-full">
+                    {/* Status badge */}
+                    <span
+                      className={`absolute top-4 right-4 font-mono text-[0.65rem] leading-[1.5] tracking-[0.1em] uppercase ${
+                        isLive ? "text-ink-secondary" : "text-ink-muted"
+                      }`}
+                    >
+                      {isLive ? "Live" : "Coming Soon"}
+                    </span>
 
-                  {/* Content */}
-                  <h2 className="text-lg font-semibold text-ink pr-20 mb-2">
-                    {tool.name}
-                  </h2>
-                  <p className="text-sm text-ink-secondary mb-4 flex-1">
-                    {tool.description}
-                  </p>
+                    {/* Content */}
+                    <h2 className="text-lg font-semibold text-ink pr-20 mb-2">
+                      {tool.name}
+                    </h2>
+                    <p className="text-sm text-ink-secondary mb-4 flex-1">
+                      {tool.description}
+                    </p>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {tool.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[0.65rem] leading-[1.5] tracking-[0.1em] uppercase text-ink-muted border border-border-default rounded px-2 py-0.5"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {tool.tags.map((tag) => (
+                        <Badge key={tag} variant="outline">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
               );
 
               if (isLive) {

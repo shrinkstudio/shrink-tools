@@ -1,3 +1,13 @@
+"use client";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+
 const TOOLS = [
   { name: "PLG Readiness", href: "/plg-readiness" },
   { name: "Accessibility", href: "/accessibility" },
@@ -74,46 +84,45 @@ export default function Header() {
         {/* Nav + CTA (right-aligned) */}
         <div className="flex items-center gap-2 ml-auto">
           <nav className="hidden md:flex items-center">
-            <div className="relative group">
-              <a
-                href="/"
-                className="inline-flex justify-center items-center py-[0.5em] px-[0.85em] gap-[0.3em] text-ink transition-opacity duration-300 ease-in-out hover:opacity-50 no-underline font-mono text-[0.75rem] leading-[1.5] tracking-[0.1em] uppercase"
-              >
-                Tools
-                <svg
-                  className="w-3 h-3 ml-0.5 transition-transform duration-200 group-hover:rotate-180"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </a>
-              <div className="absolute top-full right-0 pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="bg-white border border-border-default rounded-lg shadow-md py-2 min-w-[220px]">
-                  {TOOLS.map((tool) => (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="inline-flex justify-center items-center py-[0.5em] px-[0.85em] gap-[0.3em] text-ink transition-opacity duration-300 ease-in-out hover:opacity-50 no-underline font-mono text-[0.75rem] leading-[1.5] tracking-[0.1em] uppercase cursor-pointer outline-none">
+                  Tools
+                  <svg
+                    className="w-3 h-3 ml-0.5 transition-transform duration-200"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-[220px]">
+                {TOOLS.map((tool) => (
+                  <DropdownMenuItem key={tool.href} asChild>
                     <a
-                      key={tool.href}
                       href={tool.href}
-                      className="block px-4 py-2 text-sm text-ink-secondary hover:text-ink hover:bg-surface transition-colors"
+                      className="block px-4 py-2 text-sm text-ink-secondary hover:text-ink cursor-pointer"
                     >
                       {tool.name}
                     </a>
-                  ))}
-                </div>
-              </div>
-            </div>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
 
-          <a
-            href="https://cal.com/shrinkstudio/30min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 inline-flex justify-center items-center py-[0.5em] px-[0.85em] gap-[0.4em] border border-transparent rounded-[4px] bg-ink text-white font-mono text-[0.75rem] leading-[1.5] font-medium tracking-[0.1em] uppercase text-center no-underline transition-opacity duration-300 ease-in-out hover:opacity-50 max-sm:bg-transparent max-sm:text-ink max-sm:hover:opacity-100 max-sm:hover:underline sm:max-md:bg-transparent sm:max-md:text-ink sm:max-md:hover:opacity-100 sm:max-md:hover:underline"
-          >
-            Start a project
-          </a>
+          <Button asChild className="max-sm:bg-transparent max-sm:text-ink max-sm:hover:opacity-100 max-sm:hover:underline sm:max-md:bg-transparent sm:max-md:text-ink sm:max-md:hover:opacity-100 sm:max-md:hover:underline">
+            <a
+              href="https://cal.com/shrinkstudio/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Start a project
+            </a>
+          </Button>
         </div>
       </div>
     </header>

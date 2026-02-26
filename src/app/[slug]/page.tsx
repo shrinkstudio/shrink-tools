@@ -6,6 +6,8 @@ import CategoryBreakdown from "@/components/CategoryBreakdown";
 import StrengthsList from "@/components/StrengthsList";
 import ImprovementsList from "@/components/ImprovementsList";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/lib/supabase";
 import type { AnalysisResult } from "@/lib/types";
 
@@ -104,19 +106,19 @@ export default async function SlugReportPage({ params }: SlugPageProps) {
           scoreLabel={scoreLabel}
         />
         <div className="max-w-2xl mx-auto px-6">
-          <hr className="border-border-default" />
+          <Separator />
         </div>
         <CategoryBreakdown categories={result.categories} />
         <div className="max-w-2xl mx-auto px-6">
-          <hr className="border-border-default" />
+          <Separator />
         </div>
         <StrengthsList strengths={result.strengths} />
         <div className="max-w-2xl mx-auto px-6">
-          <hr className="border-border-default" />
+          <Separator />
         </div>
         <ImprovementsList improvements={result.improvements} />
         <div className="max-w-2xl mx-auto px-6">
-          <hr className="border-border-default" />
+          <Separator />
         </div>
 
         {/* CTA section */}
@@ -126,14 +128,15 @@ export default async function SlugReportPage({ params }: SlugPageProps) {
               We help venture-backed B2B teams evolve their website at the exact
               moment funding changes what&apos;s expected of them.
             </p>
-            <a
-              href="https://cal.com/shrinkstudio/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-5 py-2.5 bg-ink text-white rounded-lg border border-transparent font-mono text-[0.75rem] leading-[1.5] uppercase tracking-[0.1em] transition-opacity duration-300 ease-in-out hover:opacity-50 text-center"
-            >
-              Let&apos;s get started
-            </a>
+            <Button asChild>
+              <a
+                href="https://cal.com/shrinkstudio/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Let&apos;s get started
+              </a>
+            </Button>
           </div>
         </section>
       </main>

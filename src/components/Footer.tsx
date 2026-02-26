@@ -1,3 +1,5 @@
+import { Separator } from "@/components/ui/separator";
+
 const LEGAL_LINKS = [
   { label: "Privacy Policy", href: "https://shrink.studio/legals/privacy-policy" },
   { label: "Terms of Use", href: "https://shrink.studio/legals/terms-of-use" },
@@ -9,8 +11,9 @@ const LEGAL_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border-default py-8">
-      <div className="max-w-2xl mx-auto px-6 text-center space-y-3">
+    <footer>
+      <Separator />
+      <div className="py-8 max-w-2xl mx-auto px-6 text-center space-y-3">
         <p className="font-mono text-[0.75rem] leading-[1.5] tracking-[0.1em] uppercase text-ink-muted">
           Built by{" "}
           <a
