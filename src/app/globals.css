@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "PP Neue Montreal";
+  src: url("/fonts/PPNeueMontreal-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Neue Montreal Mono";
+  src: url("/fonts/PPNeueMontrealMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+}
+
+@custom-variant max-xs (@media (width < 480px));
+@custom-variant max-sm (@media (width < 640px));
+
+@theme inline {
+  --color-accent: #30ffab;
+  --color-accent-dark: #20e096;
+  --color-accent-deep: #229980;
+  --color-accent-light: #e0fff3;
+  --color-purple: #7850ff;
+  --color-surface: #f7f7f5;
+  --color-border-default: #eaeaea;
+  --color-border-strong: #d4d4d4;
+  --color-ink: #0a0a0a;
+  --color-ink-secondary: #737373;
+  --color-ink-muted: #a3a3a3;
+  --color-score-good: #229980;
+  --color-score-warn: #d97706;
+  --color-score-bad: #dc2626;
+  --color-warn-light: #fef3c7;
+  --font-sans: "PP Neue Montreal", var(--font-inter);
+  --font-mono: "PP Neue Montreal Mono", var(--font-jetbrains-mono);
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-spin: spin 1s linear infinite;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
