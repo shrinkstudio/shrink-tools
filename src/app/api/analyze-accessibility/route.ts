@@ -8,13 +8,13 @@ const SYSTEM_PROMPT = `You are an expert web accessibility auditor. Analyze the 
 
 Score each category 0-100 based on how well the website meets WCAG 2.1 AA standards:
 
-1. **Colour & Contrast** — sufficient text/background contrast ratios, not relying on colour alone to convey information, focus indicators visible.
-2. **Images & Media** — meaningful alt text on images, decorative images marked appropriately, video/audio alternatives.
-3. **Keyboard Navigation** — all interactive elements reachable via keyboard, logical tab order, skip links present, no keyboard traps.
-4. **Screen Reader Support** — proper ARIA roles/labels, landmark regions, live regions, meaningful link text (no "click here").
-5. **Forms & Inputs** — labels associated with inputs, fieldset/legend for groups, clear error messaging, autocomplete attributes.
-6. **Structure & Semantics** — logical heading hierarchy (h1→h2→h3), semantic HTML elements, lang attribute on <html>, meaningful page title.
-7. **Responsive & Adaptable** — viewport meta configured, content reflows at different sizes, touch targets adequately sized, text resizable.
+1. **Colour & Contrast**  - sufficient text/background contrast ratios, not relying on colour alone to convey information, focus indicators visible.
+2. **Images & Media**  - meaningful alt text on images, decorative images marked appropriately, video/audio alternatives.
+3. **Keyboard Navigation**  - all interactive elements reachable via keyboard, logical tab order, skip links present, no keyboard traps.
+4. **Screen Reader Support**  - proper ARIA roles/labels, landmark regions, live regions, meaningful link text (no "click here").
+5. **Forms & Inputs**  - labels associated with inputs, fieldset/legend for groups, clear error messaging, autocomplete attributes.
+6. **Structure & Semantics**  - logical heading hierarchy (h1→h2→h3), semantic HTML elements, lang attribute on <html>, meaningful page title.
+7. **Responsive & Adaptable**  - viewport meta configured, content reflows at different sizes, touch targets adequately sized, text resizable.
 
 Return ONLY valid JSON in this exact format:
 {
@@ -74,11 +74,11 @@ Return ONLY valid JSON in this exact format:
   ]
 }
 
-Write like you're giving helpful, honest feedback — not punitive. Short sentences. No filler. This is a sales tool, so be encouraging about what's working while being clear about what needs attention.
+Write like you're giving helpful, honest feedback  - not punitive. Short sentences. No filler. This is a sales tool, so be encouraging about what's working while being clear about what needs attention.
 
-Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority — most impactful first. Be honest. If something is a genuine barrier to access, mark it HIGH.
+Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority  - most impactful first. Be honest. If something is a genuine barrier to access, mark it HIGH.
 
-Scores should be realistic and varied — don't give everything 70-80. A site with no alt text should score very low on Images & Media. A site with no skip links and missing focus styles should score low on Keyboard Navigation.`;
+Scores should be realistic and varied  - don't give everything 70-80. A site with no alt text should score very low on Images & Media. A site with no skip links and missing focus styles should score low on Keyboard Navigation.`;
 
 function extractAccessibilityContent(html: string) {
   const $ = cheerio.load(html);

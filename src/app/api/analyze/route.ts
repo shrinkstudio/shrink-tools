@@ -73,9 +73,9 @@ Return ONLY valid JSON in this exact format:
 
 Write like you're giving honest feedback to a founder over coffee. Short sentences. No filler.
 
-Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority — most impactful first. Be honest. If something is genuinely blocking growth, mark it HIGH.
+Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority  - most impactful first. Be honest. If something is genuinely blocking growth, mark it HIGH.
 
-Scores should be realistic and varied — don't give everything 80-90. A site with no free trial or self-service signup should score low on Self-Service. A site with no product screenshots should score low on Visibility.`;
+Scores should be realistic and varied  - don't give everything 80-90. A site with no free trial or self-service signup should score low on Self-Service. A site with no product screenshots should score low on Visibility.`;
 
 function extractContent(html: string) {
   const $ = cheerio.load(html);

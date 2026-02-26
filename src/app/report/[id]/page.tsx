@@ -27,6 +27,6 @@ export default async function ReportPage({ params }: ReportPageProps) {
     redirect(`/${report.slug}`);
   }
 
-  // Old reports without slugs — redirect to home
+  // Old reports without slugs  - redirect to home
   notFound();
 }

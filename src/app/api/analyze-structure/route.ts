@@ -8,19 +8,19 @@ const SYSTEM_PROMPT = `You are an expert information architecture and web struct
 
 Score each category 0-100 based on what you can observe in the HTML:
 
-1. **Navigation** — Primary navigation is clear and consistent. Labels are descriptive (not vague like "Solutions" or "Resources" with no context). Navigation doesn't exceed 7±2 top-level items. Dropdown/mega menu structure is logical. Breadcrumbs present for deep pages.
+1. **Navigation**  - Primary navigation is clear and consistent. Labels are descriptive (not vague like "Solutions" or "Resources" with no context). Navigation doesn't exceed 7±2 top-level items. Dropdown/mega menu structure is logical. Breadcrumbs present for deep pages.
 
-2. **URL Structure** — URLs are clean, readable, and descriptive (not /page?id=123). Consistent URL patterns across the site. Logical hierarchy reflected in URL path (e.g. /blog/category/post). No excessive nesting (more than 3-4 levels deep is a warning). No URL parameters where clean URLs would work.
+2. **URL Structure**  - URLs are clean, readable, and descriptive (not /page?id=123). Consistent URL patterns across the site. Logical hierarchy reflected in URL path (e.g. /blog/category/post). No excessive nesting (more than 3-4 levels deep is a warning). No URL parameters where clean URLs would work.
 
-3. **Internal Linking** — Pages link to related content contextually. Anchor text is descriptive (not "click here" or "read more"). Footer isn't overloaded with links as a crutch for poor navigation. Key pages are reachable within 3 clicks from the homepage.
+3. **Internal Linking**  - Pages link to related content contextually. Anchor text is descriptive (not "click here" or "read more"). Footer isn't overloaded with links as a crutch for poor navigation. Key pages are reachable within 3 clicks from the homepage.
 
-4. **Page Hierarchy** — Clear heading hierarchy (h1 → h2 → h3, no skipping levels). Only one h1 per page. Headings accurately describe the content that follows. Content is logically grouped under headings. Heading structure would make sense as a table of contents.
+4. **Page Hierarchy**  - Clear heading hierarchy (h1 → h2 → h3, no skipping levels). Only one h1 per page. Headings accurately describe the content that follows. Content is logically grouped under headings. Heading structure would make sense as a table of contents.
 
-5. **Mobile Structure** — Viewport meta is properly configured. Content stacking order makes sense for mobile. Touch-friendly tap targets (no tiny links crammed together). Responsive images and media. Mobile-specific navigation works logically.
+5. **Mobile Structure**  - Viewport meta is properly configured. Content stacking order makes sense for mobile. Touch-friendly tap targets (no tiny links crammed together). Responsive images and media. Mobile-specific navigation works logically.
 
-6. **Performance Hints** — Images have width/height attributes (prevents layout shift). Critical resources are preloaded or prioritised. No render-blocking scripts in the head without async/defer. Lazy loading on below-the-fold images. Font loading strategy (font-display: swap or similar). Minimal third-party script bloat visible in the HTML.
+6. **Performance Hints**  - Images have width/height attributes (prevents layout shift). Critical resources are preloaded or prioritised. No render-blocking scripts in the head without async/defer. Lazy loading on below-the-fold images. Font loading strategy (font-display: swap or similar). Minimal third-party script bloat visible in the HTML.
 
-7. **Content Organisation** — Content is scannable (short paragraphs, clear sections). Related content is grouped logically. CTAs are placed in context (not randomly inserted). Information density is appropriate. Key information is above the fold. Content follows a logical flow (problem → solution → proof → action).
+7. **Content Organisation**  - Content is scannable (short paragraphs, clear sections). Related content is grouped logically. CTAs are placed in context (not randomly inserted). Information density is appropriate. Key information is above the fold. Content follows a logical flow (problem → solution → proof → action).
 
 Return ONLY valid JSON in this exact format:
 {
@@ -80,11 +80,11 @@ Return ONLY valid JSON in this exact format:
   ]
 }
 
-Write like you're giving honest, practical feedback to a founder over coffee. Short sentences. No filler. This is a sales tool — findings should make the prospect think "I need professional help to fix this" while being encouraging about what's working.
+Write like you're giving honest, practical feedback to a founder over coffee. Short sentences. No filler. This is a sales tool  - findings should make the prospect think "I need professional help to fix this" while being encouraging about what's working.
 
-Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority — most impactful first. Be honest. If something genuinely hurts discoverability or user experience, mark it HIGH.
+Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority  - most impactful first. Be honest. If something genuinely hurts discoverability or user experience, mark it HIGH.
 
-Scores should be realistic and varied — don't give everything 60-80. A site with broken heading hierarchy should score very low on Page Hierarchy. A site with vague navigation labels and 15 top-level items should score low on Navigation.
+Scores should be realistic and varied  - don't give everything 60-80. A site with broken heading hierarchy should score very low on Page Hierarchy. A site with vague navigation labels and 15 top-level items should score low on Navigation.
 
 If you can't fully assess something from a single page's HTML alone (like full site-wide linking patterns), note the limitation but assess what you can see. Focus on things that genuinely impact user experience and discoverability.`;
 
@@ -351,7 +351,7 @@ Links Summary:
 - Total: ${extracted.allLinks.length}
 - Internal: ${extracted.internalLinkCount}
 - External: ${extracted.externalLinkCount}
-- Vague anchor text ("click here", "read more", etc.): ${extracted.vagueAnchors.length}${extracted.vagueAnchors.length > 0 ? ` — ${extracted.vagueAnchors.map((a) => `"${a.text}" → ${a.href}`).join(", ")}` : ""}
+- Vague anchor text ("click here", "read more", etc.): ${extracted.vagueAnchors.length}${extracted.vagueAnchors.length > 0 ? `  - ${extracted.vagueAnchors.map((a) => `"${a.text}" → ${a.href}`).join(", ")}` : ""}
 
 Sample Links:
 ${extracted.allLinks

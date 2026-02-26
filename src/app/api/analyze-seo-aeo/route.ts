@@ -8,19 +8,19 @@ const SYSTEM_PROMPT = `You are an expert SEO and AI Engine Optimisation (AEO) an
 
 Score each category 0-100 based on what you can observe in the HTML:
 
-1. **Meta & On-Page SEO** — Title tag present, unique, descriptive, 50-60 characters. Meta description present, compelling, 150-160 characters. Canonical URL set correctly. Open Graph and Twitter Card meta tags present. Robots meta tag not accidentally blocking indexing. Favicon and apple-touch-icon present.
+1. **Meta & On-Page SEO**  - Title tag present, unique, descriptive, 50-60 characters. Meta description present, compelling, 150-160 characters. Canonical URL set correctly. Open Graph and Twitter Card meta tags present. Robots meta tag not accidentally blocking indexing. Favicon and apple-touch-icon present.
 
-2. **Heading & Content Structure** — Single h1 that clearly describes the page topic. Logical heading hierarchy (h1 → h2 → h3). Headings contain relevant keywords naturally (not stuffed). Content length is appropriate for the page type. Content is original and substantive (not thin). Key information appears early on the page.
+2. **Heading & Content Structure**  - Single h1 that clearly describes the page topic. Logical heading hierarchy (h1 → h2 → h3). Headings contain relevant keywords naturally (not stuffed). Content length is appropriate for the page type. Content is original and substantive (not thin). Key information appears early on the page.
 
-3. **Schema & Structured Data** — JSON-LD schema markup present. Schema type is appropriate for the page (Organization, WebPage, Product, Article, FAQ, etc.). Schema is complete (not just the bare minimum fields). Multiple relevant schema types used where appropriate. Schema would help generate rich snippets in search results. FAQ schema present where applicable (great for AI answers).
+3. **Schema & Structured Data**  - JSON-LD schema markup present. Schema type is appropriate for the page (Organization, WebPage, Product, Article, FAQ, etc.). Schema is complete (not just the bare minimum fields). Multiple relevant schema types used where appropriate. Schema would help generate rich snippets in search results. FAQ schema present where applicable (great for AI answers).
 
-4. **AI Visibility & Citability** — This is the star category; be thorough. Content is written in clear, factual, quotable statements (AI models love to cite these). Questions are explicitly asked and answered in the content (Q&A format sections). The site clearly states what the company/product does in plain language within the first few paragraphs. Unique data points, statistics, or claims that AI models would want to reference. Author/company authority signals (about page links, credentials, experience mentioned). Content covers topics comprehensively enough to be a useful source for AI models. Your competitors who optimise for AI search will steal your traffic — frame findings to create urgency.
+4. **AI Visibility & Citability**  - This is the star category; be thorough. Content is written in clear, factual, quotable statements (AI models love to cite these). Questions are explicitly asked and answered in the content (Q&A format sections). The site clearly states what the company/product does in plain language within the first few paragraphs. Unique data points, statistics, or claims that AI models would want to reference. Author/company authority signals (about page links, credentials, experience mentioned). Content covers topics comprehensively enough to be a useful source for AI models. Your competitors who optimise for AI search will steal your traffic  - frame findings to create urgency.
 
-5. **Technical SEO Signals** — Clean, crawlable HTML (not entirely JavaScript-rendered with empty body). Internal links use descriptive anchor text. Images have alt text with relevant descriptions. No broken link patterns visible in the HTML (href="#", empty hrefs). Hreflang tags for multilingual sites. Sitemap and robots.txt referenced or linked.
+5. **Technical SEO Signals**  - Clean, crawlable HTML (not entirely JavaScript-rendered with empty body). Internal links use descriptive anchor text. Images have alt text with relevant descriptions. No broken link patterns visible in the HTML (href="#", empty hrefs). Hreflang tags for multilingual sites. Sitemap and robots.txt referenced or linked.
 
-6. **Content Quality & E-E-A-T** — Evidence of Experience (case studies, testimonials, real examples). Evidence of Expertise (detailed, accurate content, not generic fluff). Evidence of Authority (links to credentials, publications, awards). Evidence of Trust (privacy policy, terms, contact info, physical address). Content is up to date (copyright dates, "last updated" signals). Unique perspective or original insight (not just rehashed commodity content).
+6. **Content Quality & E-E-A-T**  - Evidence of Experience (case studies, testimonials, real examples). Evidence of Expertise (detailed, accurate content, not generic fluff). Evidence of Authority (links to credentials, publications, awards). Evidence of Trust (privacy policy, terms, contact info, physical address). Content is up to date (copyright dates, "last updated" signals). Unique perspective or original insight (not just rehashed commodity content).
 
-7. **Local & Entity Signals** — Business name, address, phone (NAP) consistently presented. LocalBusiness or Organization schema with complete details. Google Maps embed or location links where relevant. Service area or location pages if applicable. Social media profile links (helps AI models connect the entity). Consistent brand entity naming throughout the site.
+7. **Local & Entity Signals**  - Business name, address, phone (NAP) consistently presented. LocalBusiness or Organization schema with complete details. Google Maps embed or location links where relevant. Service area or location pages if applicable. Social media profile links (helps AI models connect the entity). Consistent brand entity naming throughout the site.
 
 Return ONLY valid JSON in this exact format:
 {
@@ -80,11 +80,11 @@ Return ONLY valid JSON in this exact format:
   ]
 }
 
-Write like a helpful expert who really understands this stuff — making the prospect feel they've found the right people. Short sentences. No filler. This is a sales tool — be encouraging about wins while creating urgency about gaps, especially around AI visibility.
+Write like a helpful expert who really understands this stuff  - making the prospect feel they've found the right people. Short sentences. No filler. This is a sales tool  - be encouraging about wins while creating urgency about gaps, especially around AI visibility.
 
-Be specific and reference actual content from the website. Don't just say "meta description could be better" — say what's wrong and what a good one would look like. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority — most impactful first.
+Be specific and reference actual content from the website. Don't just say "meta description could be better"  - say what's wrong and what a good one would look like. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority  - most impactful first.
 
-Scores should be realistic and varied — don't give everything 60-80. A site with no schema should score very low on Schema & Structured Data. A site with no clear factual statements or Q&A content should score low on AI Visibility.`;
+Scores should be realistic and varied  - don't give everything 60-80. A site with no schema should score very low on Schema & Structured Data. A site with no clear factual statements or Q&A content should score low on AI Visibility.`;
 
 function extractSeoContent(html: string) {
   const $ = cheerio.load(html);
@@ -408,7 +408,7 @@ Question Patterns in Content: ${extracted.questionPatterns.length > 0 ? extracte
 Links (${extracted.allLinks.length} total):
 ${extracted.allLinks.slice(0, 40).map((l) => `- "${l.text}" → ${l.href}`).join("\n")}
 
-Broken Link Patterns (href="#" or empty): ${extracted.brokenLinkPatterns.length}${extracted.brokenLinkPatterns.length > 0 ? ` — ${extracted.brokenLinkPatterns.map((l) => `"${l.text}"`).join(", ")}` : ""}
+Broken Link Patterns (href="#" or empty): ${extracted.brokenLinkPatterns.length}${extracted.brokenLinkPatterns.length > 0 ? `  - ${extracted.brokenLinkPatterns.map((l) => `"${l.text}"`).join(", ")}` : ""}
 
 Images (${extracted.images.length} total):
 ${extracted.images.map((img) => `- ${img.hasAlt ? `alt="${img.altText}"` : "NO ALT"} (${img.src.slice(0, 60)})`).join("\n") || "No images found"}

@@ -13,7 +13,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       capture_pageleave: true,
     });
 
-    // Start opted out — only track after cookie consent
+    // Start opted out  - only track after cookie consent
     posthog.opt_out_capturing();
 
     // Listen for CookieYes consent

@@ -131,7 +131,7 @@ export default function SeoAeoPage() {
                   </h1>
                 </>
               }
-              subtitle="Your site needs to rank on Google AND show up in AI answers. See how visible you are across both — and what's holding you back."
+              subtitle="Your site needs to rank on Google AND show up in AI answers. See how visible you are across both  - and what's holding you back."
               categories={CATEGORIES}
             />
             {error && (

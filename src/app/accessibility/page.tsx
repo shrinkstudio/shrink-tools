@@ -131,7 +131,7 @@ export default function AccessibilityPage() {
                   </h1>
                 </>
               }
-              subtitle="Most websites fail basic accessibility checks — missing alt text, broken keyboard nav, poor contrast. See where yours stands in 30 seconds."
+              subtitle="Most websites fail basic accessibility checks  - missing alt text, broken keyboard nav, poor contrast. See where yours stands in 30 seconds."
               categories={CATEGORIES}
             />
             {error && (

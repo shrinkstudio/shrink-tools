@@ -131,7 +131,7 @@ export default function StructurePage() {
                   </h1>
                 </>
               }
-              subtitle="Audit your site's information architecture — from navigation depth to internal linking — and see if your structure helps or hurts discovery."
+              subtitle="Audit your site's information architecture  - from navigation depth to internal linking  - and see if your structure helps or hurts discovery."
               categories={CATEGORIES}
             />
             {error && (
