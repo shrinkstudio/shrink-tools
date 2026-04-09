@@ -21,8 +21,8 @@ import {
   type DevSubtype,
 } from "@/lib/estimator";
 
-const CONFIG_ENDPOINT = "https://shrink-studio-api.vercel.app/api/estimator-config";
-const SUBMIT_ENDPOINT = "https://shrink-studio-api.vercel.app/api/estimator-submit";
+const CONFIG_ENDPOINT = "/api/estimator-config";
+const SUBMIT_ENDPOINT = "/api/estimator-submit";
 
 const EMPTY_SELECTION: Selection = {
   type: "discovery",
