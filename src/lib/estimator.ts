@@ -43,7 +43,14 @@ export type DevItem = {
 };
 
 export type DevSubtype =
-  | { id: string; label: string; description: string; mode: "itemised"; items: DevItem[] }
+  | {
+      id: string;
+      label: string;
+      description: string;
+      mode: "itemised";
+      items: DevItem[];
+      minInvestment?: number;
+    }
   | { id: string; label: string; description: string; mode: "enquiry-only" };
 
 export type OptTier = {
@@ -191,7 +198,12 @@ export function computeEstimate(
       return { mode: "range", low: 0, high: 0 };
     }
     const { low, high } = sumItemRange([...selectedItems, ...addonItems], roles, overheadPerDay);
-    return { mode: "range", low: Math.round(low), high: Math.round(high) };
+    const floor = sub.minInvestment ?? 0;
+    return {
+      mode: "range",
+      low: Math.round(Math.max(low, floor)),
+      high: Math.round(Math.max(high, floor)),
+    };
   }
 
   if (selection.type === "optimisation") {
