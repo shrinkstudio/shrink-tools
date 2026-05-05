@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.47",
+    "@react-pdf/renderer": "^4.5.1",
     "@supabase/supabase-js": "^2.98.0",
     "ai": "^6.0.99",
     "cheerio": "^1.2.0",
