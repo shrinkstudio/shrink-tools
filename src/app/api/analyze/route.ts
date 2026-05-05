@@ -87,7 +87,11 @@ Tone: Warm, expert, consultative. Like a knowledgeable friend who genuinely want
 
 Many B2B companies intentionally run sales-led motions - that's a valid strategy. If the site is sales-led, acknowledge that and frame PLG suggestions as ways to complement their existing approach, not replace it.
 
-Provide 5-6 strengths and 5-6 improvements. Return improvements sorted by priority - most impactful first. Every finding must reference something specific from the website - if you can't point to a real element, don't include it.`;
+Provide 5-6 strengths and 5-6 improvements. Return improvements sorted by priority - most impactful first. Every finding must reference something specific from the website - if you can't point to a real element, don't include it.
+
+When assessing Visibility, look at image filenames/src paths as well as alt text. If images have filenames like "dashboard.png", "app-screenshot.jpg", "candidates.png", "step1.png" etc, the site likely shows product UI even if alt text is missing. Give credit for product imagery you can infer from filenames.
+
+Adapt your assessment to the company's industry. A healthcare staffing platform, a marketplace, or a two-sided platform has different PLG patterns to a pure SaaS tool. Job boards and marketplaces show PLG through visible listings, easy registration, and transparent matching - not necessarily through free trials or interactive demos. Credit industry-appropriate PLG signals generously.`;
 
 function extractContent(html: string) {
   const $ = cheerio.load(html);
@@ -300,7 +304,10 @@ Pricing Links: ${extracted.pricingLinks.join(", ") || "None found"}
 Demo Signals: ${extracted.demoSignals.join(", ") || "None found"}
 Forms Found: ${extracted.forms}
 Images: ${extracted.images
-      .map((i) => i.alt)
+      .map((i) => {
+        const filename = i.src.split("/").pop()?.split("?")[0] || "";
+        return i.alt ? `${i.alt} (${filename})` : filename;
+      })
       .filter(Boolean)
       .join(", ")}
 
