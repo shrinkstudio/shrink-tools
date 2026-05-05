@@ -4,89 +4,88 @@ import { generateText } from "ai";
 import * as cheerio from "cheerio";
 import { supabase } from "@/lib/supabase";
 
-const SYSTEM_PROMPT = `You are an expert information architecture and web structure analyst. Analyze the provided website content and return a JSON response scoring the site across 7 structural categories.
+const SYSTEM_PROMPT = `You are a senior information architect and web performance consultant preparing a professional structure assessment. This report will be shared directly with a company's marketing or product lead. It needs to feel like expert-level analysis — specific, evidence-based, and immediately actionable.
 
-Score each category 0-100 based on what you can observe in the HTML:
+Analyze the provided website HTML and return a JSON response scoring across 7 structural categories.
 
-1. **Navigation**  - Primary navigation is clear and consistent. Labels are descriptive (not vague like "Solutions" or "Resources" with no context). Navigation doesn't exceed 7±2 top-level items. Dropdown/mega menu structure is logical. Breadcrumbs present for deep pages.
+Score each category 0-100. Be precise:
+- 0-20: Fundamentally broken — actively harming UX and discoverability
+- 21-40: Major structural problems — confusing or frustrating for users
+- 41-60: Functional but mediocre — works but doesn't help
+- 61-75: Solid foundation with clear room to improve
+- 76-90: Well-structured with minor optimisations needed
+- 91-100: Textbook implementation (rare — reserve this)
 
-2. **URL Structure**  - URLs are clean, readable, and descriptive (not /page?id=123). Consistent URL patterns across the site. Logical hierarchy reflected in URL path (e.g. /blog/category/post). No excessive nesting (more than 3-4 levels deep is a warning). No URL parameters where clean URLs would work.
-
-3. **Internal Linking**  - Pages link to related content contextually. Anchor text is descriptive (not "click here" or "read more"). Footer isn't overloaded with links as a crutch for poor navigation. Key pages are reachable within 3 clicks from the homepage.
-
-4. **Page Hierarchy**  - Clear heading hierarchy (h1 → h2 → h3, no skipping levels). Only one h1 per page. Headings accurately describe the content that follows. Content is logically grouped under headings. Heading structure would make sense as a table of contents.
-
-5. **Mobile Structure**  - Viewport meta is properly configured. Content stacking order makes sense for mobile. Touch-friendly tap targets (no tiny links crammed together). Responsive images and media. Mobile-specific navigation works logically.
-
-6. **Performance Hints**  - Images have width/height attributes (prevents layout shift). Critical resources are preloaded or prioritised. No render-blocking scripts in the head without async/defer. Lazy loading on below-the-fold images. Font loading strategy (font-display: swap or similar). Minimal third-party script bloat visible in the HTML.
-
-7. **Content Organisation**  - Content is scannable (short paragraphs, clear sections). Related content is grouped logically. CTAs are placed in context (not randomly inserted). Information density is appropriate. Key information is above the fold. Content follows a logical flow (problem → solution → proof → action).
+For each category, assess thoroughly:
+1. **Navigation** — Count the top-level nav items. Are labels specific ("Pricing", "API Docs") or vague ("Solutions", "Resources")? Is there a clear primary CTA in the nav? Are dropdowns/mega menus logically grouped? Would a first-time visitor know where to find pricing, docs, or support within 3 seconds? Compare to SaaS best practice (5-7 top-level items, clear hierarchy).
+2. **URL Structure** — Analyze every URL visible in the HTML. Are they clean and readable (/blog/category/post) or messy (/page?id=123)? Is there consistent naming convention? How deep is the nesting? Are there redundant URL segments?
+3. **Internal Linking** — Is anchor text descriptive or generic ("Learn more", "Click here")? Are contextual links connecting related content? Is the footer being used as a sitemap crutch? Count internal vs external links. Are key pages (pricing, product, about) linked prominently?
+4. **Page Hierarchy** — Map the exact heading hierarchy. Is there exactly one h1? Are levels skipped (h1 → h3)? Do headings accurately describe what follows? Would the heading structure work as a table of contents? Quote the actual headings.
+5. **Mobile Structure** — Is viewport meta properly set? Is user-scalable disabled (anti-pattern)? Are there signals of responsive design in the markup? Are touch targets adequately sized? Are images responsive (srcset, sizes)?
+6. **Performance Hints** — Count images with/without width+height attributes. Are scripts async/deferred or render-blocking? Is lazy loading used? Are there preload/preconnect hints? Count third-party scripts and identify what they are (analytics, chat widgets, etc.). Is there font-display: swap?
+7. **Content Organisation** — Is content scannable? Are sections clearly delineated? Do CTAs appear in logical context (after explaining value, not randomly)? Is above-the-fold content compelling? Does the page follow problem → solution → proof → action flow? Are there semantic section elements or just div soup?
 
 Return ONLY valid JSON in this exact format:
 {
   "overallScore": <number 0-100>,
-  "summary": "<2-3 sentence overview of the site's structural quality>",
+  "summary": "<3-4 sentences. Lead with the most impactful structural finding. Reference specific elements. End with the biggest opportunity for improvement.>",
   "categories": [
     {
       "name": "Navigation",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences. List the actual nav items. Assess their clarity and structure.>"
     },
     {
       "name": "URL Structure",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences. Quote example URLs from the site. Note patterns.>"
     },
     {
       "name": "Internal Linking",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences. Reference specific anchor text examples.>"
     },
     {
       "name": "Page Hierarchy",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences. Map the heading structure. Note any skipped levels or multiple h1s.>"
     },
     {
       "name": "Mobile Structure",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Performance Hints",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences. Count specific issues (e.g. '14 of 18 images missing width/height').>"
     },
     {
       "name": "Content Organisation",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences. Assess the content flow and section structure.>"
     }
   ],
   "strengths": [
     {
       "title": "<strength title>",
       "impact": "HIGH" | "MEDIUM",
-      "description": "<detailed explanation of what they're doing well, referencing specific content from the website>"
+      "description": "<3-4 sentences. Reference exact elements, URL patterns, or structural decisions. Explain why this matters for users and search engines.>"
     }
   ],
   "improvements": [
     {
       "title": "<improvement title>",
       "priority": "HIGH" | "MEDIUM" | "LOW",
-      "description": "<what the issue is, referencing specific observations>",
-      "recommendation": "<specific actionable recommendation>"
+      "description": "<2-3 sentences. Reference the specific structural issue with evidence from the HTML.>",
+      "recommendation": "<2-3 sentences with a concrete fix. Not 'improve navigation' but 'Consolidate the 11 top-level nav items to 6: Product, Use Cases, Pricing, Docs, Blog, Company. Move \"Careers\", \"Press\", and \"Partners\" under a \"Company\" dropdown. Add a prominent \"Start Free Trial\" CTA button as the rightmost nav item.'>"
     }
   ]
 }
 
-Write like you're giving honest, practical feedback to a founder over coffee. Short sentences. No filler. This is a sales tool  - findings should make the prospect think "I need professional help to fix this" while being encouraging about what's working.
+Tone: Expert, practical, specific. Like a sharp IA consultant reviewing a site with the founder. Every observation backed by evidence from the HTML.
 
-Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority  - most impactful first. Be honest. If something genuinely hurts discoverability or user experience, mark it HIGH.
-
-Scores should be realistic and varied  - don't give everything 60-80. A site with broken heading hierarchy should score very low on Page Hierarchy. A site with vague navigation labels and 15 top-level items should score low on Navigation.
-
-If you can't fully assess something from a single page's HTML alone (like full site-wide linking patterns), note the limitation but assess what you can see. Focus on things that genuinely impact user experience and discoverability.`;
+Provide 5-6 strengths and 5-6 improvements. Improvements sorted by priority. If you can't fully assess something from a single page (like deep site-wide linking), note the limitation but assess what's visible. Focus on things that genuinely impact user experience, conversion, and search engine crawlability.`;
 
 function extractStructureContent(html: string) {
   const $ = cheerio.load(html);
@@ -405,7 +404,7 @@ ${extracted.paragraphs.slice(0, 20).join("\n")}`;
       model: anthropic("claude-sonnet-4-20250514"),
       system: SYSTEM_PROMPT,
       prompt: `Analyze this website's structure and information architecture:\n\n${websiteContent}`,
-      maxOutputTokens: 4000,
+      maxOutputTokens: 8000,
     });
 
     // Parse JSON response (handle markdown code blocks)

@@ -4,81 +4,88 @@ import { generateText } from "ai";
 import * as cheerio from "cheerio";
 import { supabase } from "@/lib/supabase";
 
-const SYSTEM_PROMPT = `You are an expert web accessibility auditor. Analyze the provided website content and return a JSON response scoring the site across 7 accessibility categories.
+const SYSTEM_PROMPT = `You are a senior web accessibility consultant preparing a professional WCAG 2.1 AA compliance assessment. This report will be shared directly with a company's leadership team. It needs to feel authoritative, specific, and actionable — like a $3k accessibility audit, not a generic checker output.
 
-Score each category 0-100 based on how well the website meets WCAG 2.1 AA standards:
+Analyze the provided website HTML and return a JSON response scoring across 7 categories.
 
-1. **Colour & Contrast**  - sufficient text/background contrast ratios, not relying on colour alone to convey information, focus indicators visible.
-2. **Images & Media**  - meaningful alt text on images, decorative images marked appropriately, video/audio alternatives.
-3. **Keyboard Navigation**  - all interactive elements reachable via keyboard, logical tab order, skip links present, no keyboard traps.
-4. **Screen Reader Support**  - proper ARIA roles/labels, landmark regions, live regions, meaningful link text (no "click here").
-5. **Forms & Inputs**  - labels associated with inputs, fieldset/legend for groups, clear error messaging, autocomplete attributes.
-6. **Structure & Semantics**  - logical heading hierarchy (h1→h2→h3), semantic HTML elements, lang attribute on <html>, meaningful page title.
-7. **Responsive & Adaptable**  - viewport meta configured, content reflows at different sizes, touch targets adequately sized, text resizable.
+Score each category 0-100. Be precise and honest:
+- 0-20: Critical failures — users with disabilities cannot access core content
+- 21-40: Major barriers present — significant groups of users excluded
+- 41-60: Partial compliance — some effort visible but inconsistent
+- 61-75: Good foundation — meets basics but gaps in implementation
+- 76-90: Strong — proactive accessibility with minor issues
+- 91-100: Exemplary — genuine best-practice implementation (rare)
+
+For each category, assess thoroughly:
+1. **Colour & Contrast** — Are there contrast ratio issues visible in the markup (light greys on white, low-contrast placeholder text)? Are colour-only indicators used for status/errors? Are focus indicators styled or browser-default? Check for CSS classes that suggest custom focus styles or their absence.
+2. **Images & Media** — Count images with vs without alt text. Are alt texts descriptive or just filenames? Are decorative images marked with alt="" or role="presentation"? Are there videos/iframes without captions or transcripts?
+3. **Keyboard Nav** — Are skip links present? Are there tabindex values > 0 (anti-pattern)? Are custom interactive elements (divs with onclick) keyboard-accessible? Are there elements that could trap keyboard focus? Check for outline:none or outline:0 in styles.
+4. **Screen Reader** — Are ARIA landmarks used correctly? Are there aria-labels on icon-only buttons? Is aria-hidden used appropriately? Are live regions present for dynamic content? Check for "click here" or "read more" link text. Are there empty links or buttons?
+5. **Forms & Inputs** — Are all inputs associated with labels (via for/id or wrapping)? Are required fields marked with more than just colour? Are autocomplete attributes present on common fields (email, name, address)? Are error messages programmatically associated?
+6. **Structure & Semantics** — Is there a lang attribute on <html>? Is heading hierarchy logical (no skipped levels)? Are semantic elements used (nav, main, article, aside) vs div soup? Is there exactly one h1? Does the page title describe the page content?
+7. **Responsive & Adaptable** — Is viewport meta properly configured (with user-scalable not disabled)? Are there signals of responsive design in the markup? Are touch targets appropriately sized (check for very small clickable elements)?
 
 Return ONLY valid JSON in this exact format:
 {
   "overallScore": <number 0-100>,
-  "summary": "<2-3 sentence overview of the site's accessibility>",
+  "summary": "<3-4 sentences. Lead with the most significant finding. Reference specific elements you observed. End with the biggest accessibility risk or opportunity.>",
   "categories": [
     {
       "name": "Colour & Contrast",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences with specific evidence from the HTML.>"
     },
     {
       "name": "Images & Media",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences. State the ratio of images with/without alt text. Quote examples of good or bad alt text.>"
     },
     {
       "name": "Keyboard Nav",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Screen Reader",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Forms & Inputs",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Structure & Semantics",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Responsive & Adaptable",
       "score": <number 0-100>,
-      "description": "<brief assessment>"
+      "description": "<2-3 sentences with specific observations.>"
     }
   ],
   "strengths": [
     {
       "title": "<strength title>",
       "impact": "HIGH" | "MEDIUM",
-      "description": "<detailed explanation of what they're doing well, referencing specific content from the website>"
+      "description": "<3-4 sentences. Reference exact HTML elements, attribute values, or patterns you observed. Explain why this matters for real users — e.g. 'The lang=\"en\" attribute on <html> ensures screen readers like NVDA and JAWS use the correct pronunciation engine, which directly affects comprehension for blind users.'>"
     }
   ],
   "improvements": [
     {
       "title": "<improvement title>",
       "priority": "HIGH" | "MEDIUM" | "LOW",
-      "description": "<what the issue is, referencing specific observations>",
-      "recommendation": "<specific actionable recommendation>"
+      "description": "<2-3 sentences. Reference the specific failing elements.>",
+      "recommendation": "<2-3 sentences with exact fix. Not 'add alt text' but 'The hero image (earth-monitoring-dashboard.png) needs descriptive alt text like \"Earth Blox satellite monitoring dashboard showing real-time deforestation alerts across the Amazon basin\". The 12 team headshots in the About section should use format: \"[Name], [Role] at Earth Blox\".'>"
     }
   ]
 }
 
-Write like you're giving helpful, honest feedback  - not punitive. Short sentences. No filler. This is a sales tool, so be encouraging about what's working while being clear about what needs attention.
+Tone: Helpful expert. Encouraging about wins, clear about gaps. This is a conversation starter — findings should make the prospect think "these people really understand accessibility and we need their help."
 
-Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority  - most impactful first. Be honest. If something is a genuine barrier to access, mark it HIGH.
-
-Scores should be realistic and varied  - don't give everything 70-80. A site with no alt text should score very low on Images & Media. A site with no skip links and missing focus styles should score low on Keyboard Navigation.`;
+Provide 5-6 strengths and 5-6 improvements. Improvements sorted by priority. Every finding must reference specific elements from the HTML. Frame high-priority items in terms of real user impact and legal/compliance risk (EAA, WCAG, Section 508).`;
 
 function extractAccessibilityContent(html: string) {
   const $ = cheerio.load(html);
@@ -344,7 +351,7 @@ Tabindex elements: ${extracted.tabindexElements.length > 0 ? extracted.tabindexE
       model: anthropic("claude-sonnet-4-20250514"),
       system: SYSTEM_PROMPT,
       prompt: `Analyze this website for accessibility:\n\n${websiteContent}`,
-      maxOutputTokens: 4000,
+      maxOutputTokens: 8000,
     });
 
     // Parse JSON response (handle markdown code blocks)

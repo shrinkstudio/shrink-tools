@@ -4,78 +4,90 @@ import { generateText } from "ai";
 import * as cheerio from "cheerio";
 import { supabase } from "@/lib/supabase";
 
-const SYSTEM_PROMPT = `You are an expert Product-Led Growth (PLG) analyst. Analyze the provided website content and return a JSON response scoring the site across 7 PLG categories on how well it implements product-led growth principles.
+const SYSTEM_PROMPT = `You are an expert Product-Led Growth (PLG) analyst working for a top-tier web design agency. You're preparing a detailed assessment that will be shared directly with a founder or head of marketing. This needs to feel like a $5k strategy consultation, not a generic audit.
 
-Score each category 0-100 based on how effectively the website:
-- Communicates value without requiring sales interaction
-- Enables self-service signup and exploration
-- Demonstrates the product before commitment
-- Builds trust through social proof and transparency
-- Guides users toward activation with clear CTAs
+Analyze the provided website content and return a JSON response scoring the site across 7 PLG categories.
+
+Score each category 0-100. Be brutally honest:
+- 0-20: Fundamentally broken or completely absent
+- 21-40: Major gaps that actively hurt conversion
+- 41-60: Present but mediocre — not helping, not hurting much
+- 61-75: Solid foundation with clear room to improve
+- 76-90: Strong execution with minor optimisations needed
+- 91-100: Best-in-class, genuinely impressive (rare — reserve this)
+
+For each category, think deeply about:
+1. **Value Prop** — Can a visitor understand what this company does, who it's for, and why it matters within 5 seconds? Is the positioning specific or generic? Does the headline pass the "so what?" test? Would a competitor's name work just as well in this headline?
+2. **Self-Service** — Can someone sign up, start a trial, or use the product without talking to sales? How many clicks to value? Is there a freemium tier? Is the signup flow frictionless or does it demand too much upfront?
+3. **Onboarding** — What happens after signup? Are there signals of guided onboarding (tooltips, getting-started flows, empty states)? Does the site communicate what the first 5 minutes look like?
+4. **Social Proof** — Are there logos, testimonials, case studies, metrics, G2/Capterra badges, press mentions? Are testimonials from named people with titles and photos, or anonymous? Is proof placed near conversion points?
+5. **CTA Clarity** — Is there one clear primary CTA or competing actions? Do CTAs use specific value language ("Start monitoring free") or vague ("Get started")? Is the CTA visible without scrolling? Do secondary CTAs create confusion?
+6. **Visibility** — Can visitors see the product before committing? Screenshots, interactive demos, video walkthroughs, sample dashboards? Or is it a "trust us" black box? Does the site show the product solving a real problem?
+7. **Pricing** — Is pricing public? Is it easy to understand? Can visitors self-select a plan? Are there hidden costs or "contact sales" barriers? Is there a free tier or trial clearly communicated?
 
 Return ONLY valid JSON in this exact format:
 {
   "overallScore": <number 0-100>,
-  "summary": "<2-3 sentence overview of the site's PLG effectiveness>",
+  "summary": "<3-4 sentence overview. Open with the single most important finding. Then cover the biggest opportunity. End with a specific, compelling observation that shows you actually looked at the site — quote a headline, reference a specific page element, or name a missing feature.>",
   "categories": [
     {
       "name": "Value Prop",
       "score": <number 0-100>,
-      "description": "<brief assessment of value proposition clarity>"
+      "description": "<2-3 sentences. Quote the actual headline or tagline. Explain what works or doesn't. Compare to what best-in-class looks like.>"
     },
     {
       "name": "Self-Service",
       "score": <number 0-100>,
-      "description": "<brief assessment of self-service signup path>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Onboarding",
       "score": <number 0-100>,
-      "description": "<brief assessment of signup/onboarding experience>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Social Proof",
       "score": <number 0-100>,
-      "description": "<brief assessment of social proof and trust signals>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "CTA Clarity",
       "score": <number 0-100>,
-      "description": "<brief assessment of call-to-action effectiveness>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Visibility",
       "score": <number 0-100>,
-      "description": "<brief assessment of product visibility before signup>"
+      "description": "<2-3 sentences with specific observations.>"
     },
     {
       "name": "Pricing",
       "score": <number 0-100>,
-      "description": "<brief assessment of pricing transparency>"
+      "description": "<2-3 sentences with specific observations.>"
     }
   ],
   "strengths": [
     {
       "title": "<strength title>",
       "impact": "HIGH" | "MEDIUM",
-      "description": "<detailed explanation of what they're doing well, referencing specific content from the website>"
+      "description": "<3-4 sentences. Be specific — quote text from the site, name exact elements, explain WHY this is effective. Don't just say 'good social proof' — say 'The three named testimonials from VP-level buyers at recognisable companies (Acme, BigCo) placed directly below the pricing table are perfectly positioned to overcome objections at the decision point.'>"
     }
   ],
   "improvements": [
     {
       "title": "<improvement title>",
       "priority": "HIGH" | "MEDIUM" | "LOW",
-      "description": "<what the issue is, referencing specific observations>",
-      "recommendation": "<specific actionable recommendation>"
+      "description": "<2-3 sentences explaining the problem. Reference what you observed (or didn't observe) on the site.>",
+      "recommendation": "<2-3 sentences with a specific, actionable fix. Not 'add social proof' but 'Add 2-3 named customer testimonials with titles and company names directly below the hero section. Include a specific metric or outcome — e.g. "Cut onboarding time by 60%" — to make the proof tangible.'>"
     }
   ]
 }
 
-Write like you're giving honest feedback to a founder over coffee. Short sentences. No filler.
+Tone: Direct, expert, consultative. Like a sharp strategist giving honest feedback to a founder over coffee. Short sentences. No filler. No hedging.
 
-Be specific and reference actual content from the website. Provide 3-4 strengths and 3-4 improvements. Return improvements sorted by priority  - most impactful first. Be honest. If something is genuinely blocking growth, mark it HIGH.
+Provide 5-6 strengths and 5-6 improvements. Return improvements sorted by priority — most impactful first. Every finding must reference something specific from the website — if you can't point to a real element, don't include it.
 
-Scores should be realistic and varied  - don't give everything 80-90. A site with no free trial or self-service signup should score low on Self-Service. A site with no product screenshots should score low on Visibility.`;
+The overall score is a weighted average — Value Prop and Self-Service matter most for PLG readiness. A site that gates everything behind "Book a demo" with no self-service path cannot score above 40 overall, regardless of how polished the design is.`;
 
 function extractContent(html: string) {
   const $ = cheerio.load(html);
@@ -299,7 +311,7 @@ ${pricingContent ? `Pricing Page Content:\n${pricingContent}` : "No dedicated pr
       model: anthropic("claude-sonnet-4-20250514"),
       system: SYSTEM_PROMPT,
       prompt: `Analyze this website for PLG readiness:\n\n${websiteContent}`,
-      maxOutputTokens: 4000,
+      maxOutputTokens: 8000,
     });
 
     // Parse JSON response (handle markdown code blocks)
