@@ -13,7 +13,7 @@ const TOOLS = [
   { name: "Accessibility", href: "/accessibility" },
   { name: "Structure & Scaffolding", href: "/structure" },
   { name: "SEO & AEO Visibility", href: "/seo-aeo" },
-  { name: "Project Estimator", href: "/project-estimator" },
+  { name: "Ready to Brief a Build?", href: "/quiz" },
 ];
 
 export default function Header() {
