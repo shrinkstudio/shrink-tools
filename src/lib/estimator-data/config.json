@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "currency": "GBP",
+  "overheadPerDay": 107.6,
+  "annualBillableDays": 220,
+  "roles": [
+    { "id": "founder",         "title": "Founder/Technical Director", "baseCostDay": 600, "markupPct": 0.4 },
+    { "id": "senior-dev",      "title": "Senior Developer",           "baseCostDay": 560, "markupPct": 0.2 },
+    { "id": "mid-dev",         "title": "Mid-Level Developer",        "baseCostDay": 400, "markupPct": 0.3 },
+    { "id": "senior-designer", "title": "Senior Designer",            "baseCostDay": 500, "markupPct": 0.3 },
+    { "id": "mid-designer",    "title": "Mid-Level Designer",         "baseCostDay": 350, "markupPct": 0.3 },
+    { "id": "pm",              "title": "Project Manager",            "baseCostDay": 250, "markupPct": 0.4 }
+  ],
+  "services": {
+    "discovery": {
+      "tiers": [
+        {
+          "id": "workshop",
+          "label": "Discovery Workshop",
+          "description": "Half-day workshop to align stakeholders, surface goals, and produce a one-page brief.",
+          "pricingMode": "per-seat",
+          "pricePerSeat": 300,
+          "minSeats": 2,
+          "maxSeats": 10
+        },
+        {
+          "id": "focused",
+          "label": "Focused Discovery",
+          "description": "Workshop, stakeholder interviews, competitor scan, and a lightweight strategy document. Good when the brief is clear but needs structure.",
+          "pricingMode": "day-based",
+          "allocations": [
+            { "roleId": "founder", "days": 4 },
+            { "roleId": "senior-designer", "days": 2 },
+            { "roleId": "pm", "days": 2 }
+          ]
+        },
+        {
+          "id": "standard",
+          "label": "Standard Discovery",
+          "description": "Workshop, stakeholder and user interviews, competitive audit, sitemap & IA, digital strategy document, and content plan.",
+          "pricingMode": "day-based",
+          "allocations": [
+            { "roleId": "founder", "days": 7 },
+            { "roleId": "senior-designer", "days": 5 },
+            { "roleId": "pm", "days": 4 }
+          ]
+        },
+        {
+          "id": "deep-dive",
+          "label": "Deep Dive Discovery",
+          "description": "Full research programme: user research, competitive audit, IA, content strategy, digital strategy, launch planning, and a board-ready deck.",
+          "pricingMode": "day-based",
+          "allocations": [
+            { "roleId": "founder", "days": 10 },
+            { "roleId": "senior-designer", "days": 8 },
+            { "roleId": "pm", "days": 6 }
+          ]
+        }
+      ]
+    },
+    "development": {
+      "subtypes": [
+        {
+          "id": "marketing-site",
+          "label": "Marketing website",
+          "description": "Webflow-based marketing site with CMS, responsive layouts, and interactions.",
+          "mode": "itemised",
+          "minInvestment": 15000,
+          "items": [
+            { "id": "design-system",  "name": "Design system setup",       "phase": "design", "effortMin": 3,   "effortMax": 5,  "team": ["senior-designer", "founder"] },
+            { "id": "wireframing",    "name": "Wireframing",               "phase": "design", "effortMin": 3,   "effortMax": 6,  "team": ["senior-designer", "founder"] },
+            { "id": "ui-design",      "name": "UI design (high-fi)",       "phase": "design", "effortMin": 8,   "effortMax": 16, "team": ["senior-designer", "founder"] },
+            { "id": "design-revisions", "name": "Design revisions",        "phase": "design", "effortMin": 2,   "effortMax": 5,  "team": ["senior-designer", "pm"] },
+            { "id": "webflow-setup",  "name": "Webflow setup & config",    "phase": "build",  "effortMin": 1,   "effortMax": 2,  "team": ["senior-dev"] },
+            { "id": "cms-build",      "name": "CMS structure & build",     "phase": "build",  "effortMin": 3,   "effortMax": 6,  "team": ["senior-dev"] },
+            { "id": "frontend-dev",   "name": "Front-end development",     "phase": "build",  "effortMin": 10,  "effortMax": 20, "team": ["senior-dev", "mid-dev"] },
+            { "id": "responsive",     "name": "Responsive (mobile/tablet)","phase": "build",  "effortMin": 3,   "effortMax": 5,  "team": ["senior-dev", "mid-dev"] },
+            { "id": "interactions",   "name": "Interactions & animations", "phase": "build",  "effortMin": 3,   "effortMax": 6,  "team": ["senior-dev", "founder"] },
+            { "id": "a11y",           "name": "Accessibility (WCAG 2.1)",  "phase": "build",  "effortMin": 2,   "effortMax": 3,  "team": ["senior-dev"] },
+            { "id": "qa",             "name": "Testing & QA",              "phase": "launch", "effortMin": 2,   "effortMax": 4,  "team": ["senior-dev", "pm"] },
+            { "id": "project-management", "name": "Project management",    "phase": "pm",     "effortMin": 5,   "effortMax": 10, "team": ["pm", "founder"] },
+            { "id": "training",       "name": "Client training",           "phase": "launch", "effortMin": 1,   "effortMax": 2,  "team": ["founder", "pm"] }
+          ]
+        },
+        {
+          "id": "web-app",
+          "label": "Web app",
+          "description": "Custom-built web application — auth, backend, database, and UI.",
+          "mode": "itemised",
+          "minInvestment": 30000,
+          "items": [
+            { "id": "design-system",  "name": "Design system setup",       "phase": "design", "effortMin": 3,   "effortMax": 6,  "team": ["senior-designer", "founder"] },
+            { "id": "wireframing",    "name": "Wireframing & user flows",  "phase": "design", "effortMin": 4,   "effortMax": 8,  "team": ["senior-designer", "founder"] },
+            { "id": "ui-design",      "name": "UI design (high-fi)",       "phase": "design", "effortMin": 10,  "effortMax": 20, "team": ["senior-designer", "mid-designer", "founder"] },
+            { "id": "design-revisions", "name": "Design revisions",        "phase": "design", "effortMin": 3,   "effortMax": 7,  "team": ["senior-designer", "pm"] },
+            { "id": "infra",          "name": "Infrastructure setup",      "phase": "build",  "effortMin": 2,   "effortMax": 4,  "team": ["senior-dev"] },
+            { "id": "auth",           "name": "Auth & user management",    "phase": "build",  "effortMin": 4,   "effortMax": 8,  "team": ["senior-dev"] },
+            { "id": "backend",        "name": "Backend & API",             "phase": "build",  "effortMin": 10,  "effortMax": 30, "team": ["senior-dev", "mid-dev", "founder"] },
+            { "id": "frontend",       "name": "Front-end application",     "phase": "build",  "effortMin": 12,  "effortMax": 30, "team": ["senior-dev", "mid-dev"] },
+            { "id": "integrations",   "name": "Third-party integrations",  "phase": "build",  "effortMin": 2,   "effortMax": 8,  "team": ["senior-dev"] },
+            { "id": "responsive",     "name": "Responsive layouts",        "phase": "build",  "effortMin": 3,   "effortMax": 6,  "team": ["senior-dev", "mid-dev"] },
+            { "id": "a11y",           "name": "Accessibility (WCAG 2.1)",  "phase": "build",  "effortMin": 2,   "effortMax": 4,  "team": ["senior-dev"] },
+            { "id": "qa",             "name": "Testing & QA",              "phase": "launch", "effortMin": 4,   "effortMax": 8,  "team": ["senior-dev", "pm"] },
+            { "id": "project-management", "name": "Project management",    "phase": "pm",     "effortMin": 8,   "effortMax": 16, "team": ["pm", "founder"] },
+            { "id": "training",       "name": "Client training & handover","phase": "launch", "effortMin": 1,   "effortMax": 3,  "team": ["founder", "pm"] }
+          ]
+        },
+        {
+          "id": "other",
+          "label": "Other development work",
+          "description": "Bespoke dev work — JS integrations, custom forms, experiments, complex migrations. Needs a scoping call.",
+          "mode": "enquiry-only"
+        }
+      ]
+    },
+    "optimisation": {
+      "tiers": [
+        {
+          "id": "light",
+          "label": "Light",
+          "monthlyPrice": 3000,
+          "description": "Monthly analytics reviews, small CRO experiments, and minor dev tweaks."
+        },
+        {
+          "id": "standard",
+          "label": "Standard",
+          "monthlyPrice": 5000,
+          "description": "Structured CRO programme, content updates, ongoing SEO, and performance work."
+        },
+        {
+          "id": "compound",
+          "label": "Shrink Compound",
+          "monthlyPrice": 10000,
+          "description": "Our full AEO + CRO + Dev retainer. Continuous experimentation across acquisition, conversion, and product."
+        }
+      ]
+    },
+    "addons": [
+      { "id": "content-migration",   "name": "Content migration",        "appliesTo": ["development"],              "effortMin": 2, "effortMax": 6, "team": ["pm", "mid-dev"] },
+      { "id": "copywriting",         "name": "Copywriting",              "appliesTo": ["discovery", "development"], "effortMin": 3, "effortMax": 8, "team": ["founder", "pm"] },
+      { "id": "advanced-analytics",  "name": "Advanced analytics setup", "appliesTo": ["development"],              "effortMin": 2, "effortMax": 4, "team": ["senior-dev"] },
+      { "id": "accessibility-audit", "name": "Accessibility audit",      "appliesTo": ["development"],              "effortMin": 2, "effortMax": 3, "team": ["senior-dev"] },
+      { "id": "content-strategy",    "name": "Content strategy",         "appliesTo": ["discovery"],                "effortMin": 2, "effortMax": 4, "team": ["founder"] }
+    ]
+  }
+}

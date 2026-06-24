@@ -14,6 +14,7 @@ const TOOLS = [
   { name: "Structure & Scaffolding", href: "/structure" },
   { name: "SEO & AEO Visibility", href: "/seo-aeo" },
   { name: "Ready to Brief a Build?", href: "/quiz" },
+  { name: "Project Calculator", href: "/calculator" },
 ];
 
 export default function Header() {
