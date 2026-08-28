@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Adfin Hero Motion</title>
+</head>
+<body>
+
+<style>
+html,body{margin:0;padding:0}
+
+  :root{
+    --green:#084235;
+    --cream:#f6f5f0;
+    --lav:#b3b3ff;
+    --sage-ui:#cfdad4;
+    --mint-line:#9fd6b2;
+    --ink:#1c1c1c;
+    --line:#e7e7e2;
+  }
+  *{margin:0;box-sizing:border-box}
+  body{background:var(--green);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--cream)}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:16px 44px;border-bottom:1px solid rgba(246,245,240,.14);position:relative;z-index:3;background:var(--green)}
+  .logo{font-weight:800;font-size:25px;letter-spacing:-.5px}
+  .nav-mid{display:flex;gap:8px;font-size:14.5px;align-items:center}
+  .nav-mid span{padding:9px 14px;opacity:.92}
+  .nav-mid span.active{background:rgba(246,245,240,.12);opacity:1}
+  .nav-cta{display:flex;gap:14px;align-items:center;font-size:14.5px}
+  .btn{border:1px solid transparent;border-radius:0;padding:11px 18px;font-size:14.5px;cursor:pointer;font-family:inherit}
+  .btn-plain{background:transparent;color:var(--cream);border:0;display:flex;gap:7px;align-items:center}
+  .btn-solid{background:#fff;color:var(--green)}
+
+  .hero{position:relative;padding:118px 44px 90px;overflow:hidden}
+  .hero-inner{max-width:1260px;margin:0 auto;position:relative;z-index:1}
+  .chip{width:52px;height:14px;background:var(--lav);margin-bottom:38px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(64px,8.2vw,118px);line-height:1;letter-spacing:-.02em;margin-bottom:34px}
+  .sub{font-size:clamp(17px,1.8vw,22px);line-height:1.5;opacity:.94;max-width:560px;margin-bottom:44px}
+  .cta-row{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:88px}
+  .email-combo{display:flex;background:#fff;padding:4px;align-items:stretch}
+  .email-combo input{border:0;outline:0;padding:11px 15px;font-size:14.5px;min-width:225px;font-family:inherit}
+  .email-combo .btn{background:var(--green);color:#fff}
+  .btn-ghost{background:transparent;color:var(--cream);border:1px solid rgba(246,245,240,.4)}
+
+  /* ambient dash field */
+  .ui-screenshot{position:absolute;inset:0;--ui-bg:transparent;--ui-block:rgba(246,245,240,.16);background:transparent;
+    -webkit-mask-image:linear-gradient(102deg,transparent 18%,rgba(0,0,0,.35) 42%,#000 62%);
+    mask-image:linear-gradient(102deg,transparent 18%,rgba(0,0,0,.35) 42%,#000 62%)}
+
+  /* ===== app window ===== */
+  .window{position:relative;z-index:1;max-width:1160px;margin:0 auto;border-radius:10px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.4)}
+  .window-bar{background:var(--sage-ui);height:34px;display:flex;align-items:center;padding:0 14px;gap:7px;position:relative}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(8,66,53,.25)}
+  .window-url{position:absolute;left:50%;transform:translateX(-50%);font-size:10.5px;color:rgba(8,66,53,.45)}
+  .window-body{display:flex;background:#fff;color:var(--ink)}
+  .win-side{width:38px;background:var(--sage-ui);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:14px}
+  .win-side .mark{width:18px;height:18px;background:var(--green);color:#fff;font-weight:800;font-size:11px;display:grid;place-items:center;border-radius:3px}
+  .win-side i{width:12px;height:12px;border:1.3px solid rgba(8,66,53,.4);border-radius:2px;display:block}
+  .win-side .spacer{flex:1}
+
+  .win-main{flex:1;padding:26px 34px 60px;min-height:560px;
+    background-image:radial-gradient(rgba(8,66,53,.10) 1px,transparent 1px);
+    background-size:14px 14px;background-position:0 40px}
+  .win-main h2{font-size:22px;font-weight:700;letter-spacing:-.2px;margin-bottom:26px;color:#111}
+
+  .flow{display:grid;grid-template-columns:1.05fr 1.05fr 1.05fr;gap:60px;position:relative;max-width:1000px}
+  .col-label{font-size:12.5px;font-weight:700;color:#222;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+  .col-label .plus{margin-left:auto;width:18px;height:18px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font-weight:400;color:#777;font-size:12px;background:#fff}
+  .col-sub{font-size:11px;color:#8a8a84;margin-bottom:14px}
+
+  .card{border:1px solid var(--line);background:#fff;border-radius:6px;padding:11px 12px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;position:relative}
+  .card .ic{width:26px;height:26px;flex:none;display:grid;place-items:center;color:#fff;font-size:8.5px;font-weight:700;border-radius:6px}
+  .ic.xero{background:#13b5ea;border-radius:50%}
+  .ic.adf{background:var(--green);border-radius:5px}
+  .ic.bank{background:#1c355e;border-radius:6px;font-size:10px}
+  .ic.soft{background:#eef4f0;color:#2c8a5f;border:1px solid #d8e8dd;font-size:11px}
+  .card b{font-size:12.5px;display:block;margin-bottom:2px;color:#111}
+  .card small{font-size:11px;color:#8a8a84;line-height:1.45;display:block}
+  .card .kebab{position:absolute;right:10px;top:10px;color:#b5b5af;font-size:12px}
+  .card .amount{margin-left:auto;font-weight:700;font-size:13.5px;color:#111;align-self:center}
+
+  .agent{border-radius:8px}
+  .agent.mint{border-color:var(--mint-line)}
+  .tag{display:inline-block;font-size:8.5px;border:1px solid var(--line);border-radius:3px;padding:1px 4px;color:#777;vertical-align:1px;margin-left:5px}
+  .enh{color:#2c8a5f}
+
+  .flow svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .flow svg path{fill:none;stroke:#bfe3cb;stroke-width:1.3}
+
+</style>
+
+<nav>
+  <div class="logo">Adfin</div>
+  <div class="nav-mid">
+    <span>Products &#8964;</span><span>Customers &#8964;</span><span class="active">Resources &#8964;</span><span>Pricing</span>
+  </div>
+  <div class="nav-cta">
+    <button class="btn btn-plain">Sign in &#9786;</button>
+    <button class="btn btn-solid">Book a demo</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="ui-screenshot"></div>
+  <div class="hero-inner">
+    <div class="chip"></div>
+    <h1>Just get paid.</h1>
+    <p class="sub">Get paid 7x faster than the average UK business with Adfin&rsquo;s powerful agentic finance platform.</p>
+    <div class="cta-row">
+      <div class="email-combo">
+        <input type="email" placeholder="What's your work email?">
+        <button class="btn">Book a Demo</button>
+      </div>
+      <button class="btn btn-ghost">Get started free</button>
+    </div>
+
+    <div class="window">
+      <div class="window-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="window-url">console.adfin.com</span></div>
+      <div class="window-body">
+        <div class="win-side">
+          <div class="mark">W</div>
+          <i></i><i></i><i></i><i></i>
+          <div class="spacer"></div>
+          <div class="mark" style="background:#0a3f30">A</div>
+          <i></i><i></i><i></i>
+        </div>
+        <div class="win-main">
+          <h2>Customer agents</h2>
+          <div class="flow">
+            <svg id="wires" preserveAspectRatio="none"></svg>
+            <div>
+              <div class="col-label">Source data</div>
+              <div class="col-sub">Connect Adfin to your customer and invoice data</div>
+              <div class="card" id="srcXero"><div class="ic xero">xero</div><div><b>Xero</b><small>Connected to Watson's Services Ltd</small></div></div>
+              <div class="card"><div class="ic adf">A</div><div><b>Raise in Adfin</b><small>Create new invoices in seconds or upload PDFs, XLSs, CSVs, or images</small></div></div>
+            </div>
+            <div>
+              <div class="col-label">Customer agents <span class="plus">+</span></div>
+              <div class="col-sub">Manage how you get paid</div>
+              <div class="card agent mint" data-agent><div class="ic soft">&#9993;</div><div><b>Standard chasing<span class="tag">OD</span></b><small><span class="enh">Enhanced</span> &middot; 530 customers</small></div><span class="kebab">&#8942;</span></div>
+              <div class="card agent mint" data-agent><div class="ic soft">&#128279;</div><div><b>Late fees<span class="tag">AC</span></b><small><span class="enh">Enhanced</span> &middot; 100 customers</small></div><span class="kebab">&#8942;</span></div>
+              <div class="card agent" data-agent><div class="ic soft">&#10148;</div><div><b>Standard AC<span class="tag">OD</span></b><small>50 customers</small></div><span class="kebab">&#8942;</span></div>
+            </div>
+            <div>
+              <div class="col-label">Where you recieve payouts</div>
+              <div class="col-sub">Everything you collect is paid out here</div>
+              <div class="card" id="bank"><div class="ic bank">&#8646;</div><div><b>Halifax</b><small>All time collected</small></div><div class="amount">&pound;306k</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){var _A=Math.abs,_M=Math.max,_m=Math.min,_R=Math.round,_S=Math.sqrt,_r=Math.random,_f=Math.floor,_F=requestAnimationFrame;var LN=14;var TH=4;var CF="#E4E4E4";var SX=20;var SY=9;var CLS=7;var KD=[{dMin:0.05,dMax:0.10,sMin:0.30,sMax:0.52},{dMin:0.26,dMax:0.44,sMin:0.26,sMax:0.43},{dMin:0.15,dMax:0.26,sMin:0.43,sMax:0.70}];var EG=5;var HR=120;var MF=48;var SS=2.9;var SM=14;var SQ=0;var GR=3;var FC=0.55;var HL=1.2;var MC=16;var IW=7;var IH=14;var AG=110;var AB=10;var ASG=3;var RC=100;var STR=24;var CP=0;var BLD=0.25;var SPR=0.075;var DPG=0.86;var LE=0.14;var gs=[];var rm=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;function rand(a,b){return a+_r()*(b-a);}function ease(t){return t*t*(3-2*t);}function build(el){if(el.dataset.uiScreenshot==="true")return;el.dataset.uiScreenshot="true";var cv=document.createElement("canvas");cv.className="ui-screenshot-canvas";cv.setAttribute("aria-hidden","true");el.prepend(cv);var ctx=cv.getContext("2d");var COLOR=(getComputedStyle(el).getPropertyValue("--ui-block")||"").trim()||CF;var g={el:el,ctx:ctx,w:0,h:0,cols:0,rows:0,ox:0,oy:0,bl:[],cs:[],oc:{},fl:0,ec:0,ak:40,aq:0,aw:0,aso:null,ad:null,mx:-9999,my:-9999,ins:false,vi:true,ru:false,sg:true};function slotX(c){return g.ox+c*SX;}function slotY(r){return g.oy+r*SY;}function key(c,r){return c+","+r;}g.ms=function(){var rect=el.getBoundingClientRect();var w=rect.width,h=rect.height;if(w<1||h<1)return false;if(w===g.w&&h===g.h)return true;g.w=w;g.h=h;var dpr=_m(window.devicePixelRatio||1,2);cv.width=_R(w*dpr);cv.height=_R(h*dpr);cv.style.width=w+"px";cv.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);g.cols=_M(4,_f((w-LN)/SX)+1);g.rows=_M(4,_f((h-TH)/SY)+1);g.ox=(w-(g.cols-1)*SX)/2;g.oy=(h-(g.rows-1)*SY)/2;var edges=[0,1,2,3];for(var e=edges.length-1;e>0;e--){var j=(_r()*(e+1))|0;var tmp=edges[e];edges[e]=edges[j];edges[j]=tmp;}g.oc={};g.bl=[];g.cs=[];g.fl=0;g.ec=0;g.ak=40;g.aq=0;g.aw=0;g.aso=null;g.ad=null;for(var sh=0;sh<CLS;sh++){var edge=edges[sh%edges.length];var k=KD[(_r()*KD.length)|0];var sw=(edge===0||edge===1);var dpx=(sw?w:h)*rand(k.dMin,k.dMax);var spx=(sw?h:w)*rand(k.sMin,k.sMax);var bw=sw?_R(dpx/SX):_R(spx/SX);var bh=sw?_R(spx/SY):_R(dpx/SY);bw=_M(1,_m(bw,g.cols));bh=_M(1,_m(bh,g.rows));var cx,cy;if(edge===0)cx=0;else if(edge===1)cx=g.cols-bw;else cx=(_r()*(g.cols-bw+1))|0;if(edge===2)cy=0;else if(edge===3)cy=g.rows-bh;else cy=(_r()*(g.rows-bh+1))|0;var cell={i:sh,c0:cx,r0:cy,bw:bw,bh:bh,x0:slotX(cx)-LN/2,x1:slotX(cx+bw-1)+LN/2,y0:slotY(cy)-TH/2,y1:slotY(cy+bh-1)+TH/2,mx:0,my:0,count:0,cap:_R(bw*bh*HL)};cell.mx=(cell.x0+cell.x1)/2;cell.my=(cell.y0+cell.y1)/2;g.cs.push(cell);for(var r=cy;r<cy+bh;r++){for(var c=cx;c<cx+bw;c++){var kk=key(c,r);if(g.oc[kk])continue;g.oc[kk]=true;cell.count++;g.bl.push({cell:sh,c:c,r:r,hx:slotX(c),hy:slotY(r),x:slotX(c),y:slotY(r),vx:0,vy:0,len:LN,mig:null});}}}g.sg=true;return true;};function Rf(cl){var c0=Infinity,c1=-Infinity,r0=Infinity,r1=-Infinity,n=0;for(var i=0;i<g.bl.length;i++){var b=g.bl[i];if(b.cell!==cl.i)continue;n++;if(b.c<c0)c0=b.c;if(b.c>c1)c1=b.c;if(b.r<r0)r0=b.r;if(b.r>r1)r1=b.r;}cl.count=n;if(!n)return;cl.x0=slotX(c0)-LN/2;cl.x1=slotX(c1)+LN/2;cl.y0=slotY(r0)-TH/2;cl.y1=slotY(r1)+TH/2;cl.mx=(cl.x0+cl.x1)/2;cl.my=(cl.y0+cl.y1)/2;var fc1=cl.c0+cl.bw-1,fr1=cl.r0+cl.bh-1;if(c0<cl.c0)cl.c0=c0;if(r0<cl.r0)cl.r0=r0;if(c1>fc1)fc1=c1;if(r1>fr1)fr1=r1;cl.bw=fc1-cl.c0+1;cl.bh=fr1-cl.r0+1;}function Ca(x,y){var best=null,bsc=Infinity;for(var i=0;i<g.cs.length;i++){var cl=g.cs[i];if(!cl.count)continue;var dx=x<cl.x0?cl.x0-x:(x>cl.x1?x-cl.x1:0);var dy=y<cl.y0?cl.y0-y:(y>cl.y1?y-cl.y1:0);var edge=dx*dx+dy*dy;if(edge>HR*HR)continue;var cxd=x-cl.mx,cyd=y-cl.my;var score=edge*1e6+(cxd*cxd+cyd*cyd);if(score<bsc){bsc=score;best=cl;}}return best;}function L(cl){var c0=_M(0,cl.c0-GR),c1=_m(g.cols-1,cl.c0+cl.bw-1+GR);var r0=_M(0,cl.r0-GR),r1=_m(g.rows-1,cl.r0+cl.bh-1+GR);var ax=cl.c0+(cl.bw-1)/2,ay=cl.r0+(cl.bh-1)/2;var hx=_M(0.5,cl.bw/2),hy=_M(0.5,cl.bh/2);var best=null,bestD=Infinity;for(var r=r0;r<=r1;r++){for(var c=c0;c<=c1;c++){if(g.oc[key(c,r)])continue;var d=_M(_A(c-ax)/hx,_A(r-ay)/hy);if(d<bestD){bestD=d;best={c:c,r:r};}}}return best;}function sift(from,bc){if(g.fl>=MF)return;var ax,ay,pick=null,pickD=bc?Infinity:-1;if(bc){ax=g.mx;ay=g.my;}else{ax=from.c0+(from.bw-1)/2;ay=from.r0+(from.bh-1)/2;}var hx=_M(0.5,from.bw/2);var hy=_M(0.5,from.bh/2);for(var i=0;i<g.bl.length;i++){var b=g.bl[i];if(b.cell!==from.i||b.mig)continue;var d;if(bc){d=_M(_A(b.hx-ax)/SX,_A(b.hy-ay)/SY);}else{d=_M(_A(b.c-ax)/hx,_A(b.r-ay)/hy);}if(bc?(d<pickD):(d>pickD)){pickD=d;pick=b;}}if(!pick)return;var dest=null,slot=null;if(g.ad&&!bc&&g.ad.i!==from.i&&g.ad.count<g.ad.cap){slot=L(g.ad);if(slot)dest=g.ad;}if(!dest){var order=[];for(var j=0;j<g.cs.length;j++){var cj=g.cs[j];if(cj.i===from.i||!cj.count)continue;if(cj.count>=cj.cap)continue;var ex=cj.mx-from.mx,ey=cj.my-from.my;order.push({cl:cj,d:ex*ex+ey*ey});}order.sort(function(p,q){return p.d-q.d;});for(var m=0;m<order.length;m++){slot=L(order[m].cl);if(slot){dest=order[m].cl;break;}}}if(!dest)return;delete g.oc[key(pick.c,pick.r)];g.oc[key(slot.c,slot.r)]=true;var tx=slotX(slot.c),ty=slotY(slot.r);var dx2=tx-pick.x,dy2=ty-pick.y;var hf=_A(dx2)>=_A(dy2);pick.mig={leg:0,t:0,x0:pick.x,y0:pick.y,xm:hf?tx:pick.x,ym:hf?pick.y:ty,x2:tx,y2:ty,dur0:0,dur1:0};var m0=_A(pick.mig.xm-pick.mig.x0)+_A(pick.mig.ym-pick.mig.y0);var m1=_A(pick.mig.x2-pick.mig.xm)+_A(pick.mig.y2-pick.mig.ym);pick.mig.dur0=_M(SM,m0/SS);pick.mig.dur1=_M(SM,m1/SS);var wsc=g.cs[pick.cell];pick.cell=dest.i;pick.c=slot.c;pick.r=slot.r;pick.hx=tx;pick.hy=ty;pick.vx=0;pick.vy=0;g.fl++;Rf(wsc);Rf(dest);}function F(){for(var at=0;at<60;at++){var bw=2+((_r()*(IW-1))|0);var bh=3+((_r()*(IH-2))|0);if(bw+2>g.cols||bh+2>g.rows)continue;var c0=1+((_r()*(g.cols-bw-1))|0);var r0=1+((_r()*(g.rows-bh-1))|0);var clear=true;for(var r=r0-1;r<=r0+bh&&clear;r++){for(var c=c0-1;c<=c0+bw;c++){if(g.oc[key(c,r)]){clear=false;break;}}}if(!clear)continue;var idx=-1;for(var i=0;i<g.cs.length;i++){if(!g.cs[i].count){idx=i;break;}}if(idx<0){if(g.cs.length>=MC)return null;idx=g.cs.length;g.cs.push({i:idx});}var cl=g.cs[idx];cl.i=idx;cl.c0=c0;cl.r0=r0;cl.bw=bw;cl.bh=bh;cl.x0=slotX(c0)-LN/2;cl.x1=slotX(c0+bw-1)+LN/2;cl.y0=slotY(r0)-TH/2;cl.y1=slotY(r0+bh-1)+TH/2;cl.mx=(cl.x0+cl.x1)/2;cl.my=(cl.y0+cl.y1)/2;cl.count=0;cl.cap=_R(bw*bh*HL);return cl;}return null;}function P(){var able=[];for(var i=0;i<g.cs.length;i++){if(g.cs[i].count>0)able.push(g.cs[i]);}if(!able.length)return null;return able[(_r()*able.length)|0];}function Tv(b){var m=b.mig;var dur=(m.leg===0)?m.dur0:m.dur1;m.t+=1/dur;if(m.t>=1){m.t=0;if(m.leg===0){m.leg=1;b.x=m.xm;b.y=m.ym;return true;}b.x=m.x2;b.y=m.y2;b.mig=null;g.fl--;return false;}var e=ease(m.t);if(m.leg===0){b.x=m.x0+(m.xm-m.x0)*e;b.y=m.y0+(m.ym-m.y0)*e;}else{b.x=m.xm+(m.x2-m.xm)*e;b.y=m.ym+(m.y2-m.ym)*e;}return true;}function Aw(ax,ay){var a=_A(ax),b2=_A(ay);if(a+b2<0.0001)return 0.5;var bias=(a-b2)/(a+b2);return 0.5+0.5*(bias<-BLD?-1:bias>BLD?1:bias/BLD);}function St(b){var tx=b.hx,ty=b.hy;var wl=LN;if(g.ins){var dx=b.hx-g.mx,dy=b.hy-g.my;var dist=_S(dx*dx+dy*dy);if(dist<RC&&dist>0.1){var f=1-dist/RC;f=f*f;var push=f*STR;var wc=Aw(dx,dy);tx+=(dx<0?-push:push)*wc;ty+=(dy<0?-push:push)*(1-wc);wl=TH+(LN-TH)*(1-f*CP);}}b.vx=(b.vx+(tx-b.x)*SPR)*DPG;b.vy=(b.vy+(ty-b.y)*SPR)*DPG;b.x+=b.vx;b.y+=b.vy;b.len+=(wl-b.len)*LE;return _A(b.vx)>0.01||_A(b.vy)>0.01||_A(b.len-wl)>0.05;}function draw(){if(g.ins&&!rm){var over=Ca(g.mx,g.my);if(over&&over.count>0){if(--g.ec<=0){g.ec=EG;sift(over,true);}}else{g.ec=0;}}var busy=false;ctx.clearRect(0,0,g.w,g.h);ctx.fillStyle=COLOR;for(var i=0;i<g.bl.length;i++){var b=g.bl[i];if(b.mig){busy=Tv(b)||busy;var want=TH+(LN-TH)*(1-SQ);b.len+=(want-b.len)*LE;}else{busy=St(b)||busy;}ctx.fillRect(b.x-b.len/2,b.y-TH/2,b.len,TH);}return busy;}function frame(){if(!g.vi){g.ru=false;return;}if(!g.ms()){_F(frame);return;}if(!rm&&AG>0&&--g.ak<=0){g.ak=(rand(AG*0.6,AG*1.4))|0;g.aso=P();g.ad=null;if(g.aso&&_r()<FC){g.ad=F();}g.aq=g.aso?AB:0;g.aw=0;}if(g.aq>0&&--g.aw<=0){g.aw=ASG;g.aq--;if(g.aso&&g.aso.count>0)sift(g.aso,false);g.sg=true;}if(g.ins||g.fl>0||g.sg){g.sg=draw()||g.ins||g.fl>0;}_F(frame);}g.start=function(){if(g.ru)return;g.ru=true;_F(frame);};g.reset=function(){g.w=0;g.h=0;g.start();};new ResizeObserver(g.reset).observe(el);new IntersectionObserver(function(e){g.vi=e[0].isIntersecting;if(g.vi)g.start();},{rootMargin:"140px"}).observe(el);gs.push(g);g.start();}document.addEventListener("pointermove",function(e){if(rm)return;for(var i=0;i<gs.length;i++){var g=gs[i];var rect=g.el.getBoundingClientRect();if(rect.width<1)continue;var x=e.clientX-rect.left,y=e.clientY-rect.top;g.mx=x;g.my=y;g.ins=x>=-RC&&y>=-RC&&x<=rect.width+RC&&y<=rect.height+RC;g.sg=true;g.start();}},{passive:true});document.addEventListener("pointerleave",function(){gs.forEach(function(g){g.ins=false;g.sg=true;});});document.querySelectorAll(".ui-screenshot").forEach(build);document.querySelectorAll(".w-tab-link, .w-slider-arrow-left, .w-slider-arrow-right").forEach(function(t){t.addEventListener("click",function(){setTimeout(function(){gs.forEach(function(g){g.reset();});},100);});});})();
+</script>
+<script>
+// connector wires, drawn from real element positions so they survive reflow
+(function(){
+  var svg=document.getElementById('wires');
+  function draw(){
+    var flow=svg.parentElement,fr=flow.getBoundingClientRect();
+    svg.setAttribute('viewBox','0 0 '+fr.width+' '+fr.height);
+    var sources=[document.getElementById('srcXero'),document.querySelector('.ic.adf').closest('.card')];
+    var agents=[].slice.call(document.querySelectorAll('[data-agent]'));
+    var bank=document.getElementById('bank');
+    var p='';
+    function edge(el,side){var r=el.getBoundingClientRect();return {x:(side==='r'?r.right:r.left)-fr.left,y:r.top+r.height/2-fr.top};}
+    sources.forEach(function(s){agents.forEach(function(a){
+      var s1=edge(s,'r'),a1=edge(a,'l'),mx=(s1.x+a1.x)/2;
+      p+='<path d="M'+s1.x+' '+s1.y+' C '+mx+' '+s1.y+', '+mx+' '+a1.y+', '+a1.x+' '+a1.y+'"/>';
+    });});
+    agents.forEach(function(a){
+      var a2=edge(a,'r'),b1=edge(bank,'l'),mx=(a2.x+b1.x)/2;
+      p+='<path d="M'+a2.x+' '+a2.y+' C '+mx+' '+a2.y+', '+mx+' '+b1.y+', '+b1.x+' '+b1.y+'"/>';
+    });
+    svg.innerHTML=p;
+  }
+  draw();window.addEventListener('resize',draw);
+})();
+</script>
+
+</body>
+</html>
