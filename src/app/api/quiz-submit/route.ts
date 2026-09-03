@@ -5,6 +5,42 @@ import type { QuizResult } from "@/lib/quiz/scoring";
 const CLICKUP_LIST_ID = "901216561772";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// The quiz is embedded as a Webflow code component on the marketing site, so the
+// form POST is cross-origin. Allow the Shrink origins + Webflow staging hosts.
+const ALLOWED_ORIGINS = new Set([
+  "https://shrink.studio",
+  "https://www.shrink.studio",
+  "https://tools.shrink.studio",
+]);
+
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (ALLOWED_ORIGINS.has(origin)) return true;
+  try {
+    const { host } = new URL(origin);
+    return host.endsWith(".webflow.io") || host.endsWith(".design.webflow.com");
+  } catch {
+    return false;
+  }
+}
+
+function corsHeaders(origin: string | null): Record<string, string> {
+  const headers: Record<string, string> = {
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    Vary: "Origin",
+  };
+  if (isAllowedOrigin(origin)) headers["Access-Control-Allow-Origin"] = origin as string;
+  return headers;
+}
+
+export async function OPTIONS(request: NextRequest) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: corsHeaders(request.headers.get("origin")),
+  });
+}
+
 type Contact = { name?: string; email?: string; company?: string; notes?: string };
 
 type Body = {
@@ -37,6 +73,7 @@ function formatAnswers(answers: Answers): string[] {
 }
 
 export async function POST(request: NextRequest) {
+  const cors = corsHeaders(request.headers.get("origin"));
   try {
     const body = (await request.json().catch(() => ({}))) as Body;
     const contact = body.contact || {};
@@ -46,7 +83,7 @@ export async function POST(request: NextRequest) {
     if (!contact.name || !contact.email || !EMAIL_REGEX.test(contact.email)) {
       return NextResponse.json(
         { success: false, error: "Name and valid email are required." },
-        { status: 400 }
+        { status: 400, headers: cors }
       );
     }
 
@@ -55,7 +92,7 @@ export async function POST(request: NextRequest) {
       console.error("CLICKUP_API_KEY is not set");
       return NextResponse.json(
         { success: false, error: "Server configuration error." },
-        { status: 500 }
+        { status: 500, headers: cors }
       );
     }
 
@@ -110,17 +147,17 @@ export async function POST(request: NextRequest) {
       console.error("ClickUp API error:", response.status, errorText);
       return NextResponse.json(
         { success: false, error: "Failed to submit enquiry." },
-        { status: 502 }
+        { status: 502, headers: cors }
       );
     }
 
     const data = await response.json();
-    return NextResponse.json({ success: true, taskId: data.id });
+    return NextResponse.json({ success: true, taskId: data.id }, { headers: cors });
   } catch (error) {
     console.error("Quiz submit error:", error);
     return NextResponse.json(
       { success: false, error: "Something went wrong." },
-      { status: 500 }
+      { status: 500, headers: cors }
     );
   }
 }
